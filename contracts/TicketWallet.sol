@@ -4,6 +4,7 @@ import {ERC721Token} from "./libs/token/ERC721/ERC721Token.sol";
 import {Pausable} from "./libs/lifecycle/Pausable.sol";
 import {FareOption} from "./types/FareOption.sol";
 
+
 contract TicketWallet is ERC721Token, Pausable {
 
   modifier onlyAdminOrTicketHolder(uint256 ticketId) {
