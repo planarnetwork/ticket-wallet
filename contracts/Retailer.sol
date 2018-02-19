@@ -1,6 +1,6 @@
 pragma solidity 0.4.20;
 
-import {Managed} from "./types/Managed.sol";
+import {Managed} from "./libs/ownership/Managed.sol";
 
 
 contract Retailer is Managed {
