@@ -1,4 +1,4 @@
-# Planar Network - Ticket Wallet Contract
+# Planar Network - Ticket Wallet Contract [![Build Status](https://travis-ci.org/planarnetwork/ticket-wallet.svg?branch=master)](https://travis-ci.org/planarnetwork/ticket-wallet)
 
 ERC721 compliant Solidity contract for travel tickets.
 
