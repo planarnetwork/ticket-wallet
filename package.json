@@ -1,63 +1,40 @@
 {
-  "name": "ticket-standards",
+  "name": "ticket-wallet",
   "version": "1.0.0",
-  "description": "Planar Network Ticket Standards",
+  "description": "Planar Network Ticket Wallet",
   "scripts": {
-    "test": "scripts/test.sh",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:sol": "solium -d .",
-    "lint:sol:fix": "solium -d . --fix",
-    "lint:all": "npm run lint && npm run lint:sol",
-    "lint:all:fix": "npm run lint:fix && npm run lint:sol:fix",
-    "console": "truffle console",
-    "coverage": "scripts/coverage.sh"
+    "test": "ganache-cli & truffle test",
+    "build": "npm run lint && npm run compile",
+    "compile": "truffle compile",
+    "lint": "solium -d contracts/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yezooz/ticket-standards.git"
+    "url": "git+https://github.com/planarnetwork/ticket-wallet.git"
   },
   "keywords": [
     "solidity",
     "ethereum",
-    "contracts"
+    "contracts",
+    "planar",
+    "network",
+    "travel",
+    "ticket",
+    "wallet"
   ],
-  "author": "Marek Mikuliszyn <marek.mikuliszyn@gmail.com>",
+  "author": "Marek Mikuliszyn <marek.mikuliszyn@gmail.com>, Linus Norton <linus@planar.network>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yezooz/ticket-standards/issues"
+    "url": "https://github.com/planarnetwork/ticket-wallet/issues"
   },
-  "homepage": "https://github.com/yezooz/ticket-standards",
+  "homepage": "https://github.com/planarnetwork/ticket-wallet",
   "devDependencies": {
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-2": "^6.18.0",
-    "babel-preset-stage-3": "^6.17.0",
-    "babel-register": "^6.23.0",
-    "chai": "^4.0.2",
-    "chai-as-promised": "^7.0.0",
-    "chai-bignumber": "^2.0.0",
-    "coveralls": "^2.13.1",
-    "eslint": "^4.11.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "ethereumjs-testrpc": "^6.0.1",
-    "ethereumjs-util": "^5.1.2",
-    "mocha-lcov-reporter": "^1.3.0",
-    "solidity-coverage": "^0.4.3",
-    "solium": "^1.1.2",
-    "truffle": "^4.0.0",
-    "truffle-hdwallet-provider": "0.0.3"
-  },
-  "dependencies": {
-    "dotenv": "^4.0.0",
-    "ethjs-abi": "^0.2.1",
+    "ganache-cli": "^6.0.3",
+    "solium": "^1.1.5",
+    "truffle": "^4.0.6",
     "zeppelin-solidity": "1.6.0"
   },
-  "main": "truffle-config.js",
+  "dependencies": {},
   "directories": {
     "doc": "docs",
     "test": "test"

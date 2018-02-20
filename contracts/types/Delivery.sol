@@ -1,6 +1,6 @@
-pragma solidity 0.4.20;
+pragma solidity 0.4.19;
 
-import "./Managed.sol";
+import "../../libs/ownership/Managed.sol";
 
 
 contract Delivery is Managed {

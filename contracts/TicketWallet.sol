@@ -1,7 +1,7 @@
-pragma solidity 0.4.20;
+pragma solidity 0.4.19;
 
-import {ERC721Token} from "./libs/token/ERC721/ERC721Token.sol";
-import {Pausable} from "./libs/lifecycle/Pausable.sol";
+import {ERC721Token} from "../libs/token/ERC721/ERC721Token.sol";
+import {Pausable} from "../libs/lifecycle/Pausable.sol";
 import {FareOption} from "./types/FareOption.sol";
 
 
