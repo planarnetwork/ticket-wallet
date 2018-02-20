@@ -24,7 +24,7 @@
     "ticket",
     "wallet"
   ],
-  "author": "Marek Mikuliszyn <marek.mikuliszyn@gmail.com>, Linus Norton <linus@planar.network>",
+  "author": "Marek Mikuliszyn <marek@planar.network>, Linus Norton <linus@planar.network>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/planarnetwork/ticket-wallet/issues"
