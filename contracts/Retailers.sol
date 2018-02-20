@@ -33,40 +33,36 @@ contract Retailers is ERC721Token, Pausable {
     return opId;
   }
 
-  function retailerById(uint _retailerId) internal onlyOwnerOf(_retailerId) returns(Retailer) {
-    return retailers[_retailerId];
-  }
-  
-  function nameById(uint _retailerId) public returns(string) {
-    return retailerById(_retailerId).name;
+  function nameById(uint _retailerId) public constant returns(string) {
+    return retailers[_retailerId].name;
   }
 
   function setNameById(uint _retailerId, string _name) public onlyOwnerOf(_retailerId) {
-    retailerById(_retailerId).name = _name;
+    retailers[_retailerId].name = _name;
   }
 
-  function descriptionById(uint _retailerId) public returns(string) {
-    return retailerById(_retailerId).description;
+  function descriptionById(uint _retailerId) public constant returns(string) {
+    return retailers[_retailerId].description;
   }
 
   function setDescriptionById(uint _retailerId, string _description) public onlyOwnerOf(_retailerId) {
-    retailerById(_retailerId).description = _description;
+    retailers[_retailerId].description = _description;
   }
 
-  function urlById(uint _retailerId) public onlyOwnerOf(_retailerId) returns(string) {
-    return retailerById(_retailerId).url;
+  function urlById(uint _retailerId) public constant returns(string) {
+    return retailers[_retailerId].url;
   }
 
   function setUrlById(uint _retailerId, string _url) public onlyOwnerOf(_retailerId) {
-    retailerById(_retailerId).url = _url;
+    retailers[_retailerId].url = _url;
   }
 
-  function pubKeyById(uint _retailerId) public onlyOwnerOf(_retailerId) returns(bytes32) {
-    return retailerById(_retailerId).pubKey;
+  function pubKeyById(uint _retailerId) public constant returns(bytes32) {
+    return retailers[_retailerId].pubKey;
   }
 
   function setPubKey(uint _retailerId, bytes32 _pubKey) public onlyOwnerOf(_retailerId) {
-    retailerById(_retailerId).pubKey = _pubKey;
+    retailers[_retailerId].pubKey = _pubKey;
   }
 
 }

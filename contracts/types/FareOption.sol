@@ -47,7 +47,7 @@ contract FareOption {
     return keccak256(origin, destination, departure, arrival, expiry, price);
   }
 
-  function checkSignature() public constant returns (bool) {
+  function checkSignature() public view returns (bool) {
     return ECVerify.ecverify(getHash(), signature, retailer);
   }
 }

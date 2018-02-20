@@ -32,41 +32,37 @@ contract Operators is ERC721Token, Pausable {
 
     return opId;
   }
-
-  function operatorById(uint _operatorId) internal onlyOwnerOf(_operatorId) returns(Operator) {
-    return operators[_operatorId];
-  }
   
-  function nameById(uint _operatorId) public returns(string) {
-    return operatorById(_operatorId).name;
+  function nameById(uint _operatorId) public constant returns(string) {
+    return operators[_operatorId].name;
   }
 
   function setNameById(uint _operatorId, string _name) public onlyOwnerOf(_operatorId) {
-    operatorById(_operatorId).name = _name;
+    operators[_operatorId].name = _name;
   }
 
-  function descriptionById(uint _operatorId) public returns(string) {
-    return operatorById(_operatorId).description;
+  function descriptionById(uint _operatorId) public constant returns(string) {
+    return operators[_operatorId].description;
   }
 
   function setDescriptionById(uint _operatorId, string _description) public onlyOwnerOf(_operatorId) {
-    operatorById(_operatorId).description = _description;
+    operators[_operatorId].description = _description;
   }
 
-  function urlById(uint _operatorId) public onlyOwnerOf(_operatorId) returns(string) {
-    return operatorById(_operatorId).url;
+  function urlById(uint _operatorId) public constant returns(string) {
+    return operators[_operatorId].url;
   }
 
   function setUrlById(uint _operatorId, string _url) public onlyOwnerOf(_operatorId) {
-    operatorById(_operatorId).url = _url;
+    operators[_operatorId].url = _url;
   }
 
-  function pubKeyById(uint _operatorId) public onlyOwnerOf(_operatorId) returns(bytes32) {
-    return operatorById(_operatorId).pubKey;
+  function pubKeyById(uint _operatorId) public constant returns(bytes32) {
+    return operators[_operatorId].pubKey;
   }
 
   function setPubKey(uint _operatorId, bytes32 _pubKey) public onlyOwnerOf(_operatorId) {
-    operatorById(_operatorId).pubKey = _pubKey;
+    operators[_operatorId].pubKey = _pubKey;
   }
 
 }
