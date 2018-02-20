@@ -15,7 +15,13 @@ contract Operators is ERC721Token, Pausable {
 
   Operator[] public operators;
 
-  function addOperator(string _name, string _description, string _url, bytes32 _pubKey) public returns (uint operatorId) {
+  function addOperator(
+    string _name, 
+    string _description, 
+    string _url, 
+    bytes32 _pubKey) 
+  public returns (uint operatorId) 
+  {
     bytes memory name = bytes(_name);
     require(bytes(name).length > 0);
     require(_pubKey[0] != 0);

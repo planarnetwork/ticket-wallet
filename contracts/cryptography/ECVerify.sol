@@ -1,5 +1,6 @@
 pragma solidity ^0.4.4;
 
+
 /*
  * @credit https://gist.github.com/axic/5b33912c6f61ae6fd96d6c4a47afde6d
  */
@@ -13,6 +14,7 @@ library ECVerify {
       return 0;
     }
 
+    /* solium-disable-next-line */
     assembly {
       r := mload(add(sig, 32))
       s := mload(add(sig, 64))
@@ -34,7 +36,12 @@ library ECVerify {
     // bytes memory prefix = "\x19Ethereum Signed Message:\n32";
     // hash = sha3(prefix, hash);
 
-    return ecrecover(hash, v, r, s);
+    return ecrecover(
+      hash, 
+      v, 
+      r, 
+      s
+    );
   }
 
   function ecverify(bytes32 hash, bytes sig, address signer) public pure returns (bool) {

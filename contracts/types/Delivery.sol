@@ -29,21 +29,6 @@ contract Shippable is Delivery {
 }
 
 
-contract MobileDelivery is Printable {
+contract Mobile is Printable {
   string public pkpassUrl;
-}
-
-
-contract SelfPrintDelivery is Printable {
-
-}
-
-
-contract ToDDelivery is Collectable {
-
-}
-
-
-contract CCSTDelivery is Shippable {
-
 }
