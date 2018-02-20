@@ -7,33 +7,18 @@ import {FareOption} from "./types/FareOption.sol";
 
 contract TicketWallet is ERC721Token, Pausable {
 
-  modifier onlyAdminOrTicketHolder(uint256 ticketId) {
-    require(ownerOf(ticketId) == msg.sender);
+  enum TicketState {Created, Paid, Fulfilled}
+
+  modifier onlyAdminOrOwnerOf(uint256 _tokenId) {
+    require(owner == msg.sender || ownerOf(_tokenId) == msg.sender);
     _;
   }
-
-  modifier onlyUnpaid(uint256 _ticketId) {
-    Ticket storage ticket = tickets[_ticketId];
-    require(ticket.state != State.Created);
-    _;
-  }
-  
-  modifier onlyPaid(uint256 _ticketId) {
-    Ticket storage ticket = tickets[_ticketId];
-    require(ticket.state != State.Paid);
-    _;
-  }
-
-  event Paid(uint256 ticketId);
-
-  // How to securely store IPFS link so others can't read its content?
-
-  enum State {Created, Paid, Fulfilled}
 
   struct Ticket {
     bytes32 name;
     uint16 price;
-    State state;
+    string payloadUrl;
+    TicketState state;
     uint created;
     uint paid;
     address retailer;
@@ -41,18 +26,22 @@ contract TicketWallet is ERC721Token, Pausable {
 
   Ticket[] public tickets;
   
-  function createTicket(FareOption fareOption) public returns (uint) {
+  function createTicket(FareOption fareOption, string _payloadUrl) public payable returns (uint) {
     require(fareOption.checkSignature());
     require(fareOption.hasNotExpired());
+    require(msg.value == fareOption.price());
 
+    // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
       name: fareOption.name(),
       price: fareOption.price(),
-      state: State.Created,
-      created: block.number,
-      paid: 0,
+      payloadUrl: _payloadUrl,
+      state: TicketState.Paid,
+      created: now,
+      paid: now,
       retailer: fareOption.retailer()
     });
+
     uint256 ticketId = tickets.push(_ticket) - 1;
 
     _mint(msg.sender, ticketId);
@@ -60,14 +49,15 @@ contract TicketWallet is ERC721Token, Pausable {
     return ticketId;
   }
 
-  function pay(uint256 _ticketId) public payable onlyUnpaid(_ticketId) {
-    Ticket storage ticket = tickets[_ticketId];
+  function markTicketAsFulfilled(uint256 _ticketId) public onlyOwner {
+    tickets[_ticketId].state = TicketState.Fulfilled;
+  }
 
-    require(msg.value < ticket.price);
+  function getTicketNameById(uint256 _ticketId) public onlyAdminOrOwnerOf(_ticketId) constant returns (bytes32) {
+    return tickets[_ticketId].name;
+  }
 
-    ticket.state = State.Paid;
-    ticket.paid = block.number;
-    
-    Paid(_ticketId);
+  function getTicketPayloadUrlById(uint256 _ticketId) public onlyAdminOrOwnerOf(_ticketId) constant returns (string) {
+    return tickets[_ticketId].payloadUrl;
   }
 }
