@@ -1,0 +1,5 @@
+node_modules/
+.git/
+src/
+.travis.yml
+./index.js
