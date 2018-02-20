@@ -2,6 +2,7 @@
   "name": "ticket-wallet",
   "version": "1.0.0",
   "description": "Planar Network Ticket Wallet",
+  "main": "build/index.js",
   "scripts": {
     "test": "ganache-cli & truffle test",
     "build": "npm run lint && npm run compile",
