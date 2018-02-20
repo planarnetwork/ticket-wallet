@@ -40,11 +40,19 @@ contract FareOption {
   }
 
   function hasNotExpired() public constant returns(bool) {
+    /* solium-disable-next-line */
     return expiry < now;
   }
 
   function getHash() internal constant returns(bytes32) {
-    return keccak256(origin, destination, departure, arrival, expiry, price);
+    return keccak256(
+      origin, 
+      destination, 
+      departure, 
+      arrival, 
+      expiry, 
+      price
+    );
   }
 
   function checkSignature() public view returns (bool) {

@@ -15,7 +15,12 @@ contract Retailers is ERC721Token, Pausable {
 
   Retailer[] public retailers;
 
-  function addRetailer(string _name, string _description, string _url, bytes32 _pubKey) public returns (uint retailerId) {
+  function addRetailer(
+    string _name, 
+    string _description, 
+    string _url, 
+    bytes32 _pubKey) public returns (uint retailerId) 
+  {
     bytes memory name = bytes(_name);
     require(bytes(name).length > 0);
     require(_pubKey[0] != 0);
