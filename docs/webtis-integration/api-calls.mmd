@@ -1,0 +1,24 @@
+sequenceDiagram
+  participant Client
+  participant Planar API
+  participant WebTIS API
+  participant Contract
+
+  Client->>Planar API: get fares and journeys
+  Planar API->>WebTIS API: get fares and journeys
+  WebTIS API-->>Planar API: results
+  Planar API-->>Client: signed results and in ETH
+
+  Client->>Planar API: select fare option
+  Planar API->>WebTIS API: create order
+  WebTIS API-->>Planar API: order
+  Planar API-->>Client: order
+
+  Client->>Contract: purchase ticket
+  Contract->>Client: new ticket contract
+   
+  Note right of Planar API: some time later...
+  Planar API->>WebTIS API: create order
+  WebTIS API-->>Planar API: fulfilment details
+  Planar API->>Contract: update ticket contract with fulfilment details
+  
