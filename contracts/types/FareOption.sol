@@ -1,6 +1,6 @@
 pragma solidity 0.4.19;
 
-import "../../libs/ECVerify.sol";
+import "../cryptography/ECVerify.sol";
 
 
 contract FareOption {
