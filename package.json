@@ -2,11 +2,13 @@
   "name": "ticket-wallet",
   "version": "1.0.0",
   "description": "Planar Network Ticket Wallet",
+  "main": "build/index.js",
   "scripts": {
     "test": "ganache-cli & truffle test",
     "build": "npm run lint && npm run compile",
     "compile": "truffle compile",
-    "lint": "solium -d contracts/"
+    "lint": "solium -d contracts/",
+    "prepublishOnly": "npm run build && node index.js"
   },
   "repository": {
     "type": "git",
