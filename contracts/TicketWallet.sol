@@ -2,7 +2,7 @@ pragma solidity 0.4.19;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
-import {FareOption} from "./types/FareOption.sol";
+import {Types} from "./types/Types.sol";
 
 
 contract TicketWallet is ERC721Token, Pausable {
@@ -26,20 +26,20 @@ contract TicketWallet is ERC721Token, Pausable {
 
   Ticket[] public tickets;
   
-  function createTicket(FareOption fareOption, string _payloadUrl) public payable returns (uint) {
-    require(fareOption.checkSignature());
-    require(fareOption.hasNotExpired());
-    require(msg.value == fareOption.price());
+  function createTicket(Types.FareOption fareOption, string _payloadUrl) public payable returns (uint) {
+    require(Types.checkSignature(fareOption));
+    require(!Types.fareOptionExpired(fareOption));
+    require(msg.value == fareOption.price);
 
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
-      name: fareOption.name(),
-      price: fareOption.price(),
+      name: fareOption.name,
+      price: fareOption.price,
       payloadUrl: _payloadUrl,
       state: TicketState.Paid,
       created: now,
       paid: now,
-      retailer: fareOption.retailer()
+      retailer: fareOption.retailer
     });
 
     uint256 ticketId = tickets.push(_ticket) - 1;
