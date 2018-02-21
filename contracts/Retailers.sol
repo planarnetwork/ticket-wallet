@@ -7,22 +7,21 @@ import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 contract Retailers is ERC721Token, Pausable {
   
   struct Retailer {
-    string name;
-    string description;
-    string url;
+    bytes32 name;
+    bytes32 description;
+    bytes32 url;
     bytes32 pubKey;
   }
 
   Retailer[] public retailers;
 
   function addRetailer(
-    string _name, 
-    string _description, 
-    string _url, 
+    bytes32 _name, 
+    bytes32 _description, 
+    bytes32 _url, 
     bytes32 _pubKey) public returns (uint retailerId) 
   {
-    bytes memory name = bytes(_name);
-    require(bytes(name).length > 0);
+    require(_name[0] != 0);
     require(_pubKey[0] != 0);
 
     Retailer memory _retailer = Retailer({
@@ -38,27 +37,27 @@ contract Retailers is ERC721Token, Pausable {
     return opId;
   }
 
-  function nameById(uint _retailerId) public constant returns(string) {
+  function nameById(uint _retailerId) public constant returns(bytes32) {
     return retailers[_retailerId].name;
   }
 
-  function setNameById(uint _retailerId, string _name) public onlyOwnerOf(_retailerId) {
+  function setNameById(uint _retailerId, bytes32 _name) public onlyOwnerOf(_retailerId) {
     retailers[_retailerId].name = _name;
   }
 
-  function descriptionById(uint _retailerId) public constant returns(string) {
+  function descriptionById(uint _retailerId) public constant returns(bytes32) {
     return retailers[_retailerId].description;
   }
 
-  function setDescriptionById(uint _retailerId, string _description) public onlyOwnerOf(_retailerId) {
+  function setDescriptionById(uint _retailerId, bytes32 _description) public onlyOwnerOf(_retailerId) {
     retailers[_retailerId].description = _description;
   }
 
-  function urlById(uint _retailerId) public constant returns(string) {
+  function urlById(uint _retailerId) public constant returns(bytes32) {
     return retailers[_retailerId].url;
   }
 
-  function setUrlById(uint _retailerId, string _url) public onlyOwnerOf(_retailerId) {
+  function setUrlById(uint _retailerId, bytes32 _url) public onlyOwnerOf(_retailerId) {
     retailers[_retailerId].url = _url;
   }
 
