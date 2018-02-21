@@ -40,7 +40,7 @@ contract FareOption {
   }
 
   function hasNotExpired() public constant returns(bool) {
-    /* solium-disable-next-line */
+    // solium-disable-next-line security/no-block-members
     return expiry < now;
   }
 
