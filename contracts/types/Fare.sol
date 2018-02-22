@@ -1,6 +1,6 @@
 pragma solidity 0.4.19;
 
-import "../cryptography/ECVerify.sol";
+import {ECTools} from "../cryptography/ECTools.sol";
 
 
 contract Fare {
@@ -16,7 +16,7 @@ contract Fare {
     bytes32 _description,
     uint _expiry, 
     uint16 _price, 
-    address _retailer, 
+    address _retailer,
     bytes _signature,
     bytes32 _payloadUrl) public
   {
@@ -38,6 +38,6 @@ contract Fare {
   }
 
   function checkSignature() public view returns (bool) {
-    return ECVerify.ecverify(getHash(), signature, retailer);
+    return ECTools.isSignedBy(getHash(), string(signature), retailer);
   }
 }

@@ -55,6 +55,18 @@ contract TicketWallet is ERC721Token, Pausable {
   Ticket[] public tickets;
 
   /**
+   * Retailers contract address
+   */
+  address public retailers;
+
+  /**
+   * Constructor
+   */
+  function TicketWallet(address _retailers) public {
+    retailers = _retailers;
+  }
+
+  /**
    * Add a ticket to the contract. 
    *
    * This function will ensure the fare option was created by an authorised retailer, convert the fare option to a
@@ -93,6 +105,13 @@ contract TicketWallet is ERC721Token, Pausable {
   }
 
   /**
+   * Set new address of Retailers contract
+   */
+  function setRetailersAddress(address _newRetailers) public onlyOwner {
+    retailers = _newRetailers;
+  }
+
+  /**
    * Return the description of the ticket 
    */
   function getTicketDescriptionById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
@@ -113,5 +132,5 @@ contract TicketWallet is ERC721Token, Pausable {
     require(tickets[_ticketId].state == TicketState.Fulfilled);
 
     return tickets[_ticketId].fulfilmentUrl;
-  }  
+  }
 }
