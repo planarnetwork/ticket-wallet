@@ -22,9 +22,7 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Ensure the given message sender is the owner or retailer of the token
    */
-  // todo extract to ownership contract, assuming access to tickets
   modifier onlyRetailerOrOwnerOf(uint256 _ticketId) {
-    // todo convert the retailer to address of some sort 
     require(tickets[_ticketId].retailer == msg.sender || ownerOf(_ticketId) == msg.sender);
     _;
   }
@@ -32,7 +30,6 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Ensure the given message sender is the retailer of the token
    */
-   // todo extract to ownership contract, assuming access to tickets
   modifier onlyRetailerOf(uint256 _ticketId) {
     require(tickets[_ticketId].retailer == msg.sender);
     _;
@@ -66,7 +63,7 @@ contract TicketWallet is ERC721Token, Pausable {
   function createTicket(Fare fare, FulfilmentMethod _fulfilmentMethod) public payable returns (uint) {
     require(fare.checkSignature());
     require(fare.hasNotExpired());
-    require(msg.value == fare.price()); // todo add tx fee, where to store?
+    require(msg.value == fare.price());
 
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
@@ -93,8 +90,6 @@ contract TicketWallet is ERC721Token, Pausable {
   function fulfilTicket(uint256 _ticketId, bytes32 _fulfilmentUrl) public onlyRetailerOf(_ticketId) {
     tickets[_ticketId].state = TicketState.Fulfilled;
     tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
-    
-    // todo emit Fulfilment event
   }
 
   /**
