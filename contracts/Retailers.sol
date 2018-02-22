@@ -8,9 +8,8 @@ contract Retailers is ERC721Token, Pausable {
   
   struct Retailer {
     address addr;
-    string name;
-    string description;
-    string url;
+    bytes32 name;
+    uint txFeeAmount;
     bytes32 pubKey;
   }
 
@@ -18,20 +17,30 @@ contract Retailers is ERC721Token, Pausable {
 
   function addRetailer(
     address _address,
-    string _name,
-    string _description,
-    string _url,
+    bytes32 _name,
     bytes32 _pubKey) public returns (uint retailerId) 
   {
-    bytes memory name = bytes(_name);
-    require(bytes(name).length > 0);
+    return addRetailer(
+      _address,
+      _name,
+      0,
+      _pubKey
+    );
+  }
+
+  function addRetailer(
+    address _address,
+    bytes32 _name,
+    uint _txFeeAmount,
+    bytes32 _pubKey) public returns (uint retailerId) 
+  {
+    require(_name[0] != 0);
     require(_pubKey[0] != 0);
 
     Retailer memory _retailer = Retailer({
       addr: _address,
       name: _name,
-      description: _description,
-      url: _url,
+      txFeeAmount: _txFeeAmount,
       pubKey: _pubKey
     });
     uint256 opId = retailers.push(_retailer) - 1;
@@ -49,28 +58,20 @@ contract Retailers is ERC721Token, Pausable {
     retailers[_retailerId].addr = _address;
   }
 
-  function nameById(uint _retailerId) public constant returns(string) {
+  function nameById(uint _retailerId) public constant returns(bytes32) {
     return retailers[_retailerId].name;
   }
 
-  function setNameById(uint _retailerId, string _name) public onlyOwnerOf(_retailerId) {
+  function setNameById(uint _retailerId, bytes32 _name) public onlyOwnerOf(_retailerId) {
     retailers[_retailerId].name = _name;
   }
 
-  function descriptionById(uint _retailerId) public constant returns(string) {
-    return retailers[_retailerId].description;
+  function txFeeAmountById(uint _retailerId) public constant returns(uint) {
+    return retailers[_retailerId].txFeeAmount;
   }
 
-  function setDescriptionById(uint _retailerId, string _description) public onlyOwnerOf(_retailerId) {
-    retailers[_retailerId].description = _description;
-  }
-
-  function urlById(uint _retailerId) public constant returns(string) {
-    return retailers[_retailerId].url;
-  }
-
-  function setUrlById(uint _retailerId, string _url) public onlyOwnerOf(_retailerId) {
-    retailers[_retailerId].url = _url;
+  function setTxFeeAmount(uint _retailerId, uint _txFeeAmount) public onlyOwnerOf(_retailerId) {
+    retailers[_retailerId].txFeeAmount = _txFeeAmount;
   }
 
   function pubKeyById(uint _retailerId) public constant returns(bytes32) {
@@ -80,5 +81,4 @@ contract Retailers is ERC721Token, Pausable {
   function setPubKey(uint _retailerId, bytes32 _pubKey) public onlyOwnerOf(_retailerId) {
     retailers[_retailerId].pubKey = _pubKey;
   }
-
 }

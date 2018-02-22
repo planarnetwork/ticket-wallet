@@ -26,7 +26,7 @@ contract TicketWallet is ERC721Token, Pausable {
    * Ensure the given message sender is the owner or retailer of the token
    */
   modifier onlyRetailerOrOwnerOf(uint256 _ticketId) {
-    require(getRetailerAddressById(tickets[_ticketId].retailerId) == msg.sender || ownerOf(_ticketId) == msg.sender);
+    require(getAddressByRetailerId(tickets[_ticketId].retailerId) == msg.sender || ownerOf(_ticketId) == msg.sender);
     _;
   }
 
@@ -34,7 +34,7 @@ contract TicketWallet is ERC721Token, Pausable {
    * Ensure the given message sender is the retailer of the token
    */
   modifier onlyRetailerOf(uint256 _ticketId) {
-    require(getRetailerAddressById(tickets[_ticketId].retailerId) == msg.sender);
+    require(getAddressByRetailerId(tickets[_ticketId].retailerId) == msg.sender);
     _;
   }
 
@@ -43,7 +43,7 @@ contract TicketWallet is ERC721Token, Pausable {
    */
   struct Ticket {
     bytes32 description;
-    uint16 price;
+    uint price;
     bytes32 payloadUrl;
     TicketState state;
     uint created;
@@ -55,7 +55,7 @@ contract TicketWallet is ERC721Token, Pausable {
   struct Fare {
     bytes32 description;
     uint expiry;
-    uint16 price;
+    uint price;
     address retailer;
     bytes signature;
     bytes32 payloadUrl;
@@ -86,8 +86,8 @@ contract TicketWallet is ERC721Token, Pausable {
    */
   function createTicket(
     bytes32 _description,
-    uint _expiry, 
-    uint16 _price, 
+    uint _expiry,
+    uint _price,
     uint _retailerId,
     string _signature,
     bytes32 _payloadUrl,
@@ -95,13 +95,15 @@ contract TicketWallet is ERC721Token, Pausable {
   {
     // solium-disable-next-line security/no-block-members
     require(_expiry < now);
-    require(ECTools.isSignedBy(keccak256(_payloadUrl, _price), _signature, getRetailerAddressById(_retailerId)));
-    require(msg.value == _price);
+    require(ECTools.isSignedBy(keccak256(_payloadUrl, _price), _signature, getAddressByRetailerId(_retailerId)));
+
+    uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
+    require(msg.value == fullPrice);
 
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
       description: _description,
-      price: _price,
+      price: fullPrice,
       payloadUrl: _payloadUrl,
       state: TicketState.Paid,
       fulfilmentMethod: _fulfilmentMethod,
@@ -128,21 +130,21 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Get Retailer's address by retailerId
    */
-  function getRetailerAddressById(uint _retailerId) public constant returns (address) {
+  function getAddressByRetailerId(uint _retailerId) public constant returns (address) {
     return Retailers(retailers).addressById(_retailerId);
+  }
+
+  /**
+   * Get Retailer's transaction fee amount by retailerId
+   */
+  function getTxFeeAmountByRetailerId(uint _retailerId) public constant returns (uint) {
+    return Retailers(retailers).txFeeAmountById(_retailerId);
   }
 
   /**
    * Set new address of Retailers contract
    */
   function setRetailerAddress(address _newRetailers) public onlyOwner {
-    retailers = _newRetailers;
-  }
-
-  /**
-   * Set new address of Retailers contract
-   */
-  function setRetailersAddress(address _newRetailers) public onlyOwner {
     retailers = _newRetailers;
   }
 
