@@ -9,6 +9,8 @@ import {Fare} from "./types/Fare.sol";
  */
 contract TicketWallet is ERC721Token, Pausable {
 
+  string public constant name = "Ticket Wallet by Planar Network";
+
   /**
    * Ticket lifecycle
    */
