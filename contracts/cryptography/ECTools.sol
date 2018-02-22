@@ -3,11 +3,11 @@ pragma solidity ^0.4.18;
 
 /* solium-disable */
 // @credit https://gist.github.com/axic/5b33912c6f61ae6fd96d6c4a47afde6d#gistcomment-2314412
-contract ECTools {
+library ECTools {
 
   // @dev Recovers the address which has signed a message
   // @thanks https://gist.github.com/axic/5b33912c6f61ae6fd96d6c4a47afde6d
-  function recoverSigner(bytes32 _hashedMsg, string _sig) public constant returns (address){
+  function recoverSigner(bytes32 _hashedMsg, string _sig) public pure returns (address) {
     require(_hashedMsg != 0x00);
 
     if (bytes(_sig).length != 132) {
@@ -32,14 +32,14 @@ contract ECTools {
   }
 
   // @dev Verifies if the message is signed by an address
-  function isSignedBy(bytes32 _hashedMsg, string _sig, address _addr) public constant returns (bool){
+  function isSignedBy(bytes32 _hashedMsg, string _sig, address _addr) public pure returns (bool) {
     require(_addr != 0x0);
 
     return _addr == recoverSigner(_hashedMsg, _sig);
   }
 
   // @dev Converts an hexstring to bytes
-  function hexstrToBytes(string _hexstr) public constant returns (bytes) {
+  function hexstrToBytes(string _hexstr) public pure returns (bytes) {
     uint len = bytes(_hexstr).length;
     require(len % 2 == 0);
 
@@ -57,9 +57,9 @@ contract ECTools {
   }
 
   // @dev Parses a hexchar, like 'a', and returns its hex value, in this case 10
-  function parseInt16Char(string _char) public constant returns (uint) {
+  function parseInt16Char(string _char) public pure returns (uint) {
     bytes memory bresult = bytes(_char);
-    bool decimals = false;
+    // bool decimals = false;
     if ((bresult[0] >= 48) && (bresult[0] <= 57)) {
       return uint(bresult[0]) - 48;
     } else if ((bresult[0] >= 65) && (bresult[0] <= 70)) {
@@ -73,13 +73,14 @@ contract ECTools {
 
   // @dev Converts a uint to a bytes32
   // @thanks https://ethereum.stackexchange.com/questions/4170/how-to-convert-a-uint-to-bytes-in-solidity
-  function uintToBytes32(uint _uint) public constant returns (bytes b) {
+  function uintToBytes32(uint _uint) public pure returns (bytes b) {
     b = new bytes(32);
     assembly {mstore(add(b, 32), _uint)}
   }
 
   // @dev Hashes the signed message
-  function toEthereumSignedMessage(string _msg) public constant returns (bytes32) {
+  // @ref https://github.com/ethereum/go-ethereum/issues/3731#issuecomment-293866868
+  function toEthereumSignedMessage(string _msg) public pure returns (bytes32) {
     uint len = bytes(_msg).length;
     require(len > 0);
     bytes memory prefix = "\x19Ethereum Signed Message:\n";
@@ -87,7 +88,7 @@ contract ECTools {
   }
 
   // @dev Converts a uint in a string
-  function uintToString(uint _uint) public constant returns (string str) {
+  function uintToString(uint _uint) public pure returns (string str) {
     uint len = 0;
     uint m = _uint + 0;
     while (m != 0) {
@@ -107,7 +108,7 @@ contract ECTools {
 
   // @dev extract a substring
   // @thanks https://ethereum.stackexchange.com/questions/31457/substring-in-solidity
-  function substring(string _str, uint _startIndex, uint _endIndex) public constant returns (string) {
+  function substring(string _str, uint _startIndex, uint _endIndex) public pure returns (string) {
     bytes memory strBytes = bytes(_str);
     require(_startIndex <= _endIndex);
     require(_startIndex >= 0);
