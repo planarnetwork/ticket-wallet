@@ -3,40 +3,29 @@ pragma solidity 0.4.19;
 import "../cryptography/ECVerify.sol";
 
 
-contract FareOption {
+contract Fare {
   
-  bytes32 public name;
-  bytes4 public origin;
-  bytes4 public destination;
-  uint public departure;
-  uint public arrival;
+  bytes32 public description;
   uint public expiry;
   uint16 public price;
-
   address public retailer;
   bytes private signature;
+  bytes32 public payloadUrl;
 
-  function FareOption(
-    bytes32 _name,
-    bytes4 _origin, 
-    bytes4 _destination, 
-    uint _departure, 
-    uint _arrival, 
+  function Fare(
+    bytes32 _description,
     uint _expiry, 
     uint16 _price, 
     address _retailer, 
-    bytes _signature) public
+    bytes _signature,
+    bytes32 _payloadUrl) public
   {
-    name = _name;
-    origin = _origin;
-    destination = _destination;
-    departure = _departure;
-    arrival = _arrival;
+    description = _description;
     expiry = _expiry;
     price = _price;
     retailer = _retailer;
-
     signature = _signature;
+    payloadUrl = _payloadUrl;
   }
 
   function hasNotExpired() public constant returns(bool) {
@@ -45,14 +34,7 @@ contract FareOption {
   }
 
   function getHash() internal constant returns(bytes32) {
-    return keccak256(
-      origin, 
-      destination, 
-      departure, 
-      arrival, 
-      expiry, 
-      price
-    );
+    return keccak256(payloadUrl, price);
   }
 
   function checkSignature() public view returns (bool) {
