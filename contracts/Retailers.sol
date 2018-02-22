@@ -7,6 +7,7 @@ import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 contract Retailers is ERC721Token, Pausable {
   
   struct Retailer {
+    address addr;
     string name;
     string description;
     string url;
@@ -16,9 +17,10 @@ contract Retailers is ERC721Token, Pausable {
   Retailer[] public retailers;
 
   function addRetailer(
-    string _name, 
-    string _description, 
-    string _url, 
+    address _address,
+    string _name,
+    string _description,
+    string _url,
     bytes32 _pubKey) public returns (uint retailerId) 
   {
     bytes memory name = bytes(_name);
@@ -26,6 +28,7 @@ contract Retailers is ERC721Token, Pausable {
     require(_pubKey[0] != 0);
 
     Retailer memory _retailer = Retailer({
+      addr: _address,
       name: _name,
       description: _description,
       url: _url,
@@ -36,6 +39,14 @@ contract Retailers is ERC721Token, Pausable {
     _mint(msg.sender, opId);
 
     return opId;
+  }
+
+  function addressById(uint _retailerId) public constant returns(address) {
+    return retailers[_retailerId].addr;
+  }
+
+  function setAddressById(uint _retailerId, address _address) public onlyOwnerOf(_retailerId) {
+    retailers[_retailerId].addr = _address;
   }
 
   function nameById(uint _retailerId) public constant returns(string) {
