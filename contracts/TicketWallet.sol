@@ -2,7 +2,8 @@ pragma solidity 0.4.19;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
-import {Fare} from "./types/Fare.sol";
+import {Retailers} from "./Retailers.sol";
+import {ECTools} from "./ECTools.sol";
 
 /**
  * Manage the creation and storage of tickets.
@@ -25,7 +26,7 @@ contract TicketWallet is ERC721Token, Pausable {
    * Ensure the given message sender is the owner or retailer of the token
    */
   modifier onlyRetailerOrOwnerOf(uint256 _ticketId) {
-    require(tickets[_ticketId].retailer == msg.sender || ownerOf(_ticketId) == msg.sender);
+    require(getRetailerAddressById(tickets[_ticketId].retailerId) == msg.sender || ownerOf(_ticketId) == msg.sender);
     _;
   }
 
@@ -33,7 +34,7 @@ contract TicketWallet is ERC721Token, Pausable {
    * Ensure the given message sender is the retailer of the token
    */
   modifier onlyRetailerOf(uint256 _ticketId) {
-    require(tickets[_ticketId].retailer == msg.sender);
+    require(getRetailerAddressById(tickets[_ticketId].retailerId) == msg.sender);
     _;
   }
 
@@ -48,7 +49,16 @@ contract TicketWallet is ERC721Token, Pausable {
     uint created;
     FulfilmentMethod fulfilmentMethod;
     bytes32 fulfilmentUrl;
+    uint retailerId;
+  }
+
+  struct Fare {
+    bytes32 description;
+    uint expiry;
+    uint16 price;
     address retailer;
+    bytes signature;
+    bytes32 payloadUrl;
   }
   
   /**
@@ -74,21 +84,30 @@ contract TicketWallet is ERC721Token, Pausable {
    * This function will ensure the fare option was created by an authorised retailer, convert the fare option to a
    * ticket and store it in the contract storage.
    */
-  function createTicket(Fare fare, FulfilmentMethod _fulfilmentMethod) public payable returns (uint) {
-    require(fare.checkSignature());
-    require(fare.hasNotExpired());
-    require(msg.value == fare.price());
+  function createTicket(
+    bytes32 _description,
+    uint _expiry, 
+    uint16 _price, 
+    uint _retailerId,
+    string _signature,
+    bytes32 _payloadUrl,
+    FulfilmentMethod _fulfilmentMethod) public payable returns (uint) 
+  {
+    // solium-disable-next-line security/no-block-members
+    require(_expiry < now);
+    require(ECTools.isSignedBy(keccak256(_payloadUrl, _price), _signature, getRetailerAddressById(_retailerId)));
+    require(msg.value == _price);
 
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
-      description: fare.description(),
-      price: fare.price(),
-      payloadUrl: fare.payloadUrl(),
+      description: _description,
+      price: _price,
+      payloadUrl: _payloadUrl,
       state: TicketState.Paid,
       fulfilmentMethod: _fulfilmentMethod,
       fulfilmentUrl: 0,
       created: now,
-      retailer: fare.retailer()
+      retailerId: _retailerId
     });
 
     uint256 ticketId = tickets.push(_ticket) - 1;
@@ -104,6 +123,20 @@ contract TicketWallet is ERC721Token, Pausable {
   function fulfilTicket(uint256 _ticketId, bytes32 _fulfilmentUrl) public onlyRetailerOf(_ticketId) {
     tickets[_ticketId].state = TicketState.Fulfilled;
     tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
+  }
+
+  /**
+   * Get Retailer's address by retailerId
+   */
+  function getRetailerAddressById(uint _retailerId) public constant returns (address) {
+    return Retailers(retailers).addressById(_retailerId);
+  }
+
+  /**
+   * Set new address of Retailers contract
+   */
+  function setRetailerAddress(address _newRetailers) public onlyOwner {
+    retailers = _newRetailers;
   }
 
   /**
