@@ -10,6 +10,8 @@ import {ECTools} from "./ECTools.sol";
  */
 contract TicketWallet is ERC721Token, Pausable {
 
+  string public constant name = "Ticket Wallet by Planar Network";
+
   /**
    * Ticket lifecycle
    */
@@ -84,8 +86,8 @@ contract TicketWallet is ERC721Token, Pausable {
    */
   function createTicket(
     bytes32 _description,
-    uint _expiry, 
-    uint _price, 
+    uint _expiry,
+    uint _price,
     uint _retailerId,
     string _signature,
     bytes32 _payloadUrl,
@@ -125,10 +127,16 @@ contract TicketWallet is ERC721Token, Pausable {
     tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
   }
 
+  /**
+   * Get Retailer's address by retailerId
+   */
   function getAddressByRetailerId(uint _retailerId) public constant returns (address) {
     return Retailers(retailers).addressById(_retailerId);
   }
 
+  /**
+   * Get Retailer's transaction fee amount by retailerId
+   */
   function getTxFeeAmountByRetailerId(uint _retailerId) public constant returns (uint) {
     return Retailers(retailers).txFeeAmountById(_retailerId);
   }
