@@ -135,6 +135,13 @@ contract TicketWallet is ERC721Token, Pausable {
   }
 
   /**
+   * Set new address of Retailers contract
+   */
+  function setRetailersAddress(address _newRetailers) public onlyOwner {
+    retailers = _newRetailers;
+  }
+
+  /**
    * Return the description of the ticket 
    */
   function getTicketDescriptionById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
