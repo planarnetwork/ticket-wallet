@@ -123,6 +123,9 @@ contract TicketWallet is ERC721Token, Pausable {
     tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
   }
 
+  /**
+   * Get Retailer's address by retailerId
+   */
   function getRetailerAddressById(uint _retailerId) public constant returns (address) {
     return Retailers(retailers).addressById(_retailerId);
   }
