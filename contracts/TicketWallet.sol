@@ -52,15 +52,6 @@ contract TicketWallet is ERC721Token, Pausable {
     uint retailerId;
   }
 
-  struct Fare {
-    bytes32 description;
-    uint expiry;
-    uint price;
-    address retailer;
-    bytes signature;
-    bytes32 payloadUrl;
-  }
-  
   /**
    * Ticket storage
    */
@@ -72,7 +63,7 @@ contract TicketWallet is ERC721Token, Pausable {
   address public retailers;
 
   /**
-   * Constructor
+   * Store a reference to the ERC-721 index of authorised retailers
    */
   function TicketWallet(address _retailers) public {
     retailers = _retailers;
@@ -81,7 +72,7 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Add a ticket to the contract. 
    *
-   * This function will ensure the fare option was created by an authorised retailer, convert the fare option to a
+   * This function will ensure the price, expiry time and payload were created by an authorised retailer, create the
    * ticket and store it in the contract storage.
    */
   function createTicket(
@@ -93,10 +84,15 @@ contract TicketWallet is ERC721Token, Pausable {
     bytes32 _payloadUrl,
     FulfilmentMethod _fulfilmentMethod) public payable returns (uint) 
   {
+    require(
+      ECTools.isSignedBy(
+        keccak256(_payloadUrl, _price, _expiry), 
+        _signature, 
+        getAddressByRetailerId(_retailerId)
+      )
+    );
     // solium-disable-next-line security/no-block-members
     require(_expiry < now);
-    require(ECTools.isSignedBy(keccak256(_payloadUrl, _expiry, _price), _signature, getAddressByRetailerId(_retailerId)));
-
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
     require(msg.value == fullPrice);
 
