@@ -14,6 +14,19 @@ contract TicketWallet is ERC721Token, Pausable {
     _;
   }
 
+  struct FareOption {
+    bytes32 name;
+    bytes4 origin;
+    bytes4 destination;
+    uint departure;
+    uint arrival;
+    uint expiry;
+    uint16 price;
+
+    address retailer;
+    bytes signature;
+  }
+
   struct Ticket {
     bytes32 name;
     uint16 price;
