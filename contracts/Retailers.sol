@@ -9,7 +9,6 @@ contract Retailers is ERC721Token, Pausable {
   struct Retailer {
     address addr;
     bytes32 name;
-    string url;
     uint txFeeAmount;
     bytes32 pubKey;
   }
@@ -19,13 +18,11 @@ contract Retailers is ERC721Token, Pausable {
   function addRetailer(
     address _address,
     bytes32 _name,
-    string _url,
     bytes32 _pubKey) public returns (uint retailerId) 
   {
     return addRetailer(
       _address,
       _name,
-      _url,
       0,
       _pubKey
     );
@@ -34,7 +31,6 @@ contract Retailers is ERC721Token, Pausable {
   function addRetailer(
     address _address,
     bytes32 _name,
-    string _url,
     uint _txFeeAmount,
     bytes32 _pubKey) public returns (uint retailerId) 
   {
@@ -44,7 +40,6 @@ contract Retailers is ERC721Token, Pausable {
     Retailer memory _retailer = Retailer({
       addr: _address,
       name: _name,
-      url: _url,
       txFeeAmount: _txFeeAmount,
       pubKey: _pubKey
     });
@@ -69,14 +64,6 @@ contract Retailers is ERC721Token, Pausable {
 
   function setNameById(uint _retailerId, bytes32 _name) public onlyOwnerOf(_retailerId) {
     retailers[_retailerId].name = _name;
-  }
-
-  function urlById(uint _retailerId) public constant returns(string) {
-    return retailers[_retailerId].url;
-  }
-
-  function setUrlById(uint _retailerId, string _url) public onlyOwnerOf(_retailerId) {
-    retailers[_retailerId].url = _url;
   }
 
   function txFeeAmountById(uint _retailerId) public constant returns(uint) {
