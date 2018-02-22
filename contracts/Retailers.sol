@@ -4,6 +4,8 @@ import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 
 
+// todo add transaction fee
+
 contract Retailers is ERC721Token, Pausable {
   
   struct Retailer {

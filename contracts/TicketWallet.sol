@@ -24,7 +24,7 @@ contract TicketWallet is ERC721Token, Pausable {
    */
   // todo extract to ownership contract, assuming access to tickets
   modifier onlyRetailerOrOwnerOf(uint256 _ticketId) {
-    // todo will the .retailer property store the correct value? 
+    // todo convert the retailer to address of some sort 
     require(tickets[_ticketId].retailer == msg.sender || ownerOf(_ticketId) == msg.sender);
     _;
   }
@@ -68,7 +68,6 @@ contract TicketWallet is ERC721Token, Pausable {
     require(fare.hasNotExpired());
     require(msg.value == fare.price()); // todo add tx fee, where to store?
 
-    // todo encrypt payloadUrl with sender public key
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
       description: fare.description(),
@@ -86,8 +85,6 @@ contract TicketWallet is ERC721Token, Pausable {
     _mint(msg.sender, ticketId);
 
     return ticketId;
-    
-    // todo emit Sold event
   }
 
   /**
@@ -95,7 +92,7 @@ contract TicketWallet is ERC721Token, Pausable {
    */
   function fulfilTicket(uint256 _ticketId, bytes32 _fulfilmentUrl) public onlyRetailerOf(_ticketId) {
     tickets[_ticketId].state = TicketState.Fulfilled;
-    tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl; // todo encrypt with ticket owner public key
+    tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
     
     // todo emit Fulfilment event
   }
@@ -111,7 +108,7 @@ contract TicketWallet is ERC721Token, Pausable {
    * Return the URL of the full ticket details
    */
   function getTicketPayloadUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
-    return tickets[_ticketId].payloadUrl; // todo decrypt
+    return tickets[_ticketId].payloadUrl;
   }
   
   /**
@@ -120,6 +117,6 @@ contract TicketWallet is ERC721Token, Pausable {
   function getFulfilmentUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
     require(tickets[_ticketId].state == TicketState.Fulfilled);
 
-    return tickets[_ticketId].fulfilmentUrl; // todo decrypt
+    return tickets[_ticketId].fulfilmentUrl;
   }  
 }

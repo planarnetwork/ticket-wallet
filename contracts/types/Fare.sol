@@ -6,10 +6,6 @@ import "../cryptography/ECVerify.sol";
 contract Fare {
   
   bytes32 public description;
-  bytes4 public origin;
-  bytes4 public destination;
-  uint public departure;
-  uint public arrival;
   uint public expiry;
   uint16 public price;
   address public retailer;
@@ -18,10 +14,6 @@ contract Fare {
 
   function Fare(
     bytes32 _description,
-    bytes4 _origin, 
-    bytes4 _destination, 
-    uint _departure, 
-    uint _arrival, 
     uint _expiry, 
     uint16 _price, 
     address _retailer, 
@@ -29,10 +21,6 @@ contract Fare {
     bytes32 _payloadUrl) public
   {
     description = _description;
-    origin = _origin;
-    destination = _destination;
-    departure = _departure;
-    arrival = _arrival;
     expiry = _expiry;
     price = _price;
     retailer = _retailer;
