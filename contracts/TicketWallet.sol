@@ -95,7 +95,7 @@ contract TicketWallet is ERC721Token, Pausable {
   {
     // solium-disable-next-line security/no-block-members
     require(_expiry < now);
-    require(ECTools.isSignedBy(keccak256(_payloadUrl, _price), _signature, getAddressByRetailerId(_retailerId)));
+    require(ECTools.isSignedBy(keccak256(_payloadUrl, _expiry, _price), _signature, getAddressByRetailerId(_retailerId)));
 
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
     require(msg.value == fullPrice);
