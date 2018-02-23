@@ -82,7 +82,11 @@ contract TicketWallet is ERC721Token, Pausable {
     uint _retailerId,
     string _signature,
     bytes32 _payloadUrl,
-    FulfilmentMethod _fulfilmentMethod) public payable returns (uint) 
+    FulfilmentMethod _fulfilmentMethod
+  ) 
+    public 
+    payable 
+    returns (uint) 
   {
     require(
       ECTools.isSignedBy(

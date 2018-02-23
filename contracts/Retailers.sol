@@ -18,7 +18,10 @@ contract Retailers is ERC721Token, Pausable {
   function addRetailer(
     address _address,
     bytes32 _name,
-    bytes32 _pubKey) public returns (uint retailerId) 
+    bytes32 _pubKey
+  ) 
+    public
+    returns (uint retailerId) 
   {
     return addRetailer(
       _address,
@@ -32,7 +35,10 @@ contract Retailers is ERC721Token, Pausable {
     address _address,
     bytes32 _name,
     uint _txFeeAmount,
-    bytes32 _pubKey) public returns (uint retailerId) 
+    bytes32 _pubKey
+  ) 
+    public
+    returns (uint retailerId) 
   {
     require(_name[0] != 0);
     require(_pubKey[0] != 0);
