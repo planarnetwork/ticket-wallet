@@ -33,7 +33,7 @@ contract Retailers is ERC721Token, Pausable {
     bytes32 _pubKey
   ) 
     public
-    onlyOwner()
+    onlyOwner
     returns (uint retailerId) 
   {
     require(_name[0] != 0);
