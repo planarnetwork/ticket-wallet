@@ -131,7 +131,7 @@ contract TicketWallet is ERC721Token, Pausable {
    * Get Retailer's address by retailerId
    */
   function getAddressByRetailerId(uint _retailerId) public constant returns (address) {
-    return Retailers(retailers).addressById(_retailerId);
+    return Retailers(retailers).ownerOf(_retailerId);
   }
 
   /**

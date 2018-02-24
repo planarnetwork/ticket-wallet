@@ -3,4 +3,4 @@ node_js:
   - 9
   
 install: npm install
-script: npm run build
+script: npm run test
