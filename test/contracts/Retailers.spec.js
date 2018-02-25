@@ -1,5 +1,5 @@
 const {toAscii} = require("../util/String.js");
-const Retailers = artifacts.require("../Retailers.sol");
+const Retailers = artifacts.require("Retailers.sol");
 
 contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
 
