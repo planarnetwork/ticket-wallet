@@ -9,8 +9,8 @@ contract("TicketWallet", ([owner, retailer]) => {
     console.log(TicketWallet.address);
     const ticketWallet = await TicketWallet.deployed();
     const expiry = Date.now() + 86400;
-      
-    await ticketWallet.createTicket.sendTransaction(
+    
+    await ticketWallet.createTicket(
       "Anytime from Brighton to London Terminals",
       expiry,
       10000,
@@ -21,9 +21,11 @@ contract("TicketWallet", ([owner, retailer]) => {
     );
     
     const [description, payloadUrl] = await Promise.all([
-      ticketWallet.getTicketDescriptionById.call(0),
-      ticketWallet.getTicketPayloadUrlById.call(0)
+      ticketWallet.getTicketDescriptionById(0),
+      ticketWallet.getTicketPayloadUrlById(0)
     ]);
+
+    console.log(description, payloadUrl);
     
     assert.equal(toAscii(description), "Anytime from Brighton to London Terminals");
     assert.equal(toAscii(payloadUrl), "ipfs://2fkfsd48f3654fsdx56f4gj354");
@@ -41,7 +43,7 @@ contract("TicketWallet", ([owner, retailer]) => {
 
   });
 
-  xit("ensures the fulfilment method is valid", async () => {
+  it("ensures the fulfilment method is valid", async () => {
 
   });
 

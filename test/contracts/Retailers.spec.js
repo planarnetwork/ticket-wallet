@@ -6,7 +6,7 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
   it("adds retailers", async () => {
     const retailers = await Retailers.deployed();
     
-    await retailers.addRetailer.sendTransaction(
+    await retailers.addRetailer(
       retailer,
       "A Retailer",
       10000,
@@ -14,10 +14,10 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
     );
     
     const [address, name, fee, publicKey] = await Promise.all([
-      retailers.ownerOf.call(0),
-      retailers.nameById.call(0),
-      retailers.txFeeAmountById.call(0),
-      retailers.pubKeyById.call(0)
+      retailers.ownerOf(0),
+      retailers.nameById(0),
+      retailers.txFeeAmountById(0),
+      retailers.pubKeyById(0)
     ]);
     
     assert.equal(address, retailer);
@@ -29,9 +29,9 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
   it("sets a retailer's name", async () => {
     const retailers = await Retailers.deployed();
     
-    await retailers.setNameById.sendTransaction(0, "New Name", { from: retailer });
+    await retailers.setNameById(0, "New Name", { from: retailer });
     
-    const name = await retailers.nameById.call(0);
+    const name = await retailers.nameById(0);
     
     assert.equal(toAscii(name), "New Name");
   });
@@ -41,7 +41,8 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
     let set = false;
     
     try {
-      await retailers.setNameById.sendTransaction(0, "New Name", { from: owner });
+      await retailers.setNameById(0, "New Name", { from: owner });
+
       set = true;
     }
     catch (err) {}
@@ -52,9 +53,9 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
   it("sets a retailer's fee", async () => {
     const retailers = await Retailers.deployed();
     
-    await retailers.setTxFeeAmountById.sendTransaction(0, 0, { from: retailer });
+    await retailers.setTxFeeAmountById(0, 0, { from: retailer });
     
-    const fee = await retailers.txFeeAmountById.call(0);
+    const fee = await retailers.txFeeAmountById(0);
     
     assert.equal(fee, 0);
   });
@@ -64,7 +65,7 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
     let set = false;
     
     try {
-      await retailers.setTxFeeAmountById.sendTransaction(0, 100, { from: owner });
+      await retailers.setTxFeeAmountById(0, 100, { from: owner });
       set = true;
     }
     catch (err) {}
@@ -75,9 +76,9 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
   it("sets a retailer's public key", async () => {
     const retailers = await Retailers.deployed();
     
-    await retailers.setPubKey.sendTransaction(0, "46f5d44e554gju421334151as534f5j6", { from: retailer });
+    await retailers.setPubKey(0, "46f5d44e554gju421334151as534f5j6", { from: retailer });
     
-    const key = await retailers.pubKeyById.call(0);
+    const key = await retailers.pubKeyById(0);
     
     assert.equal(toAscii(key), "46f5d44e554gju421334151as534f5j6");
   });
@@ -87,7 +88,7 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
     let set = false;
     
     try {
-      await retailers.setPubKey.sendTransaction(0, "46f5d44e554gju421334151as534f5j6", { from: owner });
+      await retailers.setPubKey(0, "46f5d44e554gju421334151as534f5j6", { from: owner });
       set = true;
     }
     catch (err) {}
@@ -98,9 +99,9 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
   it("transfer ownership of a retailer", async () => {
     const retailers = await Retailers.deployed();
     
-    await retailers.transfer.sendTransaction(newRetailerAddress, 0, { from: retailer });
+    await retailers.transfer(newRetailerAddress, 0, { from: retailer });
     
-    const address = await retailers.ownerOf.call(0);
+    const address = await retailers.ownerOf(0);
     
     assert.equal(address, newRetailerAddress);
   });
