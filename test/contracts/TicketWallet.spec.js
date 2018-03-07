@@ -8,6 +8,7 @@ contract("TicketWallet", ([owner, retailer]) => {
   it("can create tickets", async () => {
     console.log(TicketWallet.address);
     const ticketWallet = await TicketWallet.deployed();
+
     const expiry = Date.now() + 86400;
     
     await ticketWallet.createTicket(
@@ -24,8 +25,6 @@ contract("TicketWallet", ([owner, retailer]) => {
       ticketWallet.getTicketDescriptionById(0),
       ticketWallet.getTicketPayloadUrlById(0)
     ]);
-
-    console.log(description, payloadUrl);
     
     assert.equal(toAscii(description), "Anytime from Brighton to London Terminals");
     assert.equal(toAscii(payloadUrl), "ipfs://2fkfsd48f3654fsdx56f4gj354");

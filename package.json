@@ -31,9 +31,9 @@
   },
   "homepage": "https://github.com/planarnetwork/ticket-wallet",
   "devDependencies": {
-    "ganache-cli": "^6.0.3",
+    "ganache-cli": "^6.1.0",
     "solium": "^1.1.5",
-    "truffle": "^4.0.6",
+    "truffle": "^4.1.0",
     "zeppelin-solidity": "1.6.0"
   },
   "dependencies": {},
