@@ -80,7 +80,7 @@ contract TicketWallet is ERC721Token, Pausable {
     uint _expiry,
     uint _price,
     uint _retailerId,
-    string _signature,
+    /* string _signature, */
     bytes32 _payloadUrl,
     FulfilmentMethod _fulfilmentMethod
   ) 
@@ -88,22 +88,23 @@ contract TicketWallet is ERC721Token, Pausable {
     payable 
     returns (uint) 
   {
-    require(
+    /* require(
       ECTools.isSignedBy(
         keccak256(_payloadUrl, _price, _expiry), 
         _signature, 
         getAddressByRetailerId(_retailerId)
       )
-    );
+    ); */
     // solium-disable-next-line security/no-block-members
     require(_expiry < now);
-    uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
-    require(msg.value == fullPrice);
+    /* uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
+    require(msg.value == fullPrice); */
 
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
       description: _description,
-      price: fullPrice,
+      /* price: fullPrice, */
+      price: _price,
       payloadUrl: _payloadUrl,
       state: TicketState.Paid,
       fulfilmentMethod: _fulfilmentMethod,
