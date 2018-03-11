@@ -6,12 +6,15 @@ const ECTools = artifacts.require("ECTools.sol");
 contract("TicketWallet", ([owner, retailer]) => {
 
   it("can create tickets", async () => {
+    const retailers = await Retailers.deployed();
+    await retailers.addRetailer(retailer, "A Retailer", 0, "5d4f6s8df4524w6fd5s4f6ws8e4f65s4");
+    
     const ticketWallet = await TicketWallet.deployed();
-    const expiry = Date.now() + 86400;
+    const expiry = Math.floor(Date.now() / 1000) + 86400;
     const ticketCost = 10000;
     const retailTransactionFee = 0;
     const transactionCost = ticketCost + retailTransactionFee;
-    
+
     await ticketWallet.createTicket(
       "Anytime from Brighton to London",
       expiry,
@@ -21,31 +24,28 @@ contract("TicketWallet", ([owner, retailer]) => {
       0, 
       {
         value: transactionCost,
-        from: owner,
-        gas: 1000000
+        from: owner
       }
     );
     
-    console.log("HERE");
     const [description, payloadUrl] = await Promise.all([
-      ticketWallet.getTicketDescriptionById(0),
-      ticketWallet.getTicketPayloadUrlById(0)
+      ticketWallet.getTicketDescriptionById(0, { from: owner }),
+      ticketWallet.getTicketPayloadUrlById(0, { from: owner })
     ]);
-    console.log("HERE");
     
-    assert.equal(toAscii(description), "Anytime from Brighton to London Terminals");
-    assert.equal(toAscii(payloadUrl), "ipfs://2fkfsd48f3654fsdx56f4gj354");
+    assert.equal(toAscii(description), "Anytime from Brighton to London");
+    assert.equal(toAscii(payloadUrl), "ipfs://2fkfsd48f3654fsdx56f4gj3");
   });
 
-  it("ensures the ticket details are signed by an authorised retailer", async () => {
-
-  });
-
-  it("ensures amount sent covers the cost of the ticket and the transaction fee", async () => {
+  xit("ensures the ticket details are signed by an authorised retailer", async () => {
 
   });
 
-  it("ensures offer has not expired", async () => {
+  xit("ensures amount sent covers the cost of the ticket and the transaction fee", async () => {
+
+  });
+
+  xit("ensures offer has not expired", async () => {
 
   });
 

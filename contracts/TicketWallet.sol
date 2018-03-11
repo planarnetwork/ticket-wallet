@@ -96,9 +96,9 @@ contract TicketWallet is ERC721Token, Pausable {
       )
     ); */
     // solium-disable-next-line security/no-block-members
-    require(_expiry < now);
-    /* uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
-    require(msg.value == fullPrice); */
+    require(_expiry > now);
+    uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
+    require(msg.value == fullPrice);
 
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
@@ -131,14 +131,14 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Get Retailer's address by retailerId
    */
-  function getAddressByRetailerId(uint _retailerId) private constant returns (address) {
+  function getAddressByRetailerId(uint _retailerId) private view returns (address) {
     return Retailers(retailers).ownerOf(_retailerId);
   }
 
   /**
    * Get Retailer's transaction fee amount by retailerId
    */
-  function getTxFeeAmountByRetailerId(uint _retailerId) private constant returns (uint) {
+  function getTxFeeAmountByRetailerId(uint _retailerId) private view returns (uint) {
     return Retailers(retailers).txFeeAmountById(_retailerId);
   }
 
@@ -152,21 +152,21 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Return the description of the ticket 
    */
-  function getTicketDescriptionById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
+  function getTicketDescriptionById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
     return tickets[_ticketId].description;
   }
 
   /**
    * Return the URL of the full ticket details
    */
-  function getTicketPayloadUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
+  function getTicketPayloadUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
     return tickets[_ticketId].payloadUrl;
   }
   
   /**
    * Return the URL containing the fulfilment information
    */
-  function getFulfilmentUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
+  function getFulfilmentUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
     require(tickets[_ticketId].state == TicketState.Fulfilled);
 
     return tickets[_ticketId].fulfilmentUrl;
