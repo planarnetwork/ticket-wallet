@@ -7,12 +7,13 @@ contract("TicketWallet", ([owner, retailer]) => {
 
   it("can create tickets", async () => {
     const retailers = await Retailers.deployed();
-    await retailers.addRetailer(retailer, "A Retailer", 0, "5d4f6s8df4524w6fd5s4f6ws8e4f65s4");
+    const retailTransactionFee = 100;
+
+    await retailers.addRetailer(retailer, "A Retailer", retailTransactionFee, "5d4f6s8df4524w6fd5s4f6ws8e4f65s4");
     
     const ticketWallet = await TicketWallet.deployed();
     const expiry = Math.floor(Date.now() / 1000) + 86400;
     const ticketCost = 10000;
-    const retailTransactionFee = 0;
     const transactionCost = ticketCost + retailTransactionFee;
 
     await ticketWallet.createTicket(
@@ -41,12 +42,61 @@ contract("TicketWallet", ([owner, retailer]) => {
 
   });
 
-  xit("ensures amount sent covers the cost of the ticket and the transaction fee", async () => {
-
+  it("ensures amount sent covers the cost of the ticket and the transaction fee", async () => {
+    const ticketWallet = await TicketWallet.deployed();
+    const expiry = Math.floor(Date.now() / 1000) + 86400;
+    const ticketCost = 10000;
+    let complete = false;
+    
+    try {
+      await ticketWallet.createTicket(
+        "Anytime from Brighton to London",
+        expiry,
+        ticketCost,
+        0,
+        "ipfs://2fkfsd48f3654fsdx56f4gj3",
+        0, 
+        {
+          value: ticketCost,
+          from: owner
+        }
+      );
+      
+      complete = true;
+    }
+    catch (err) {}
+    
+    assert.equal(complete, false);
   });
 
-  xit("ensures offer has not expired", async () => {
+  it("ensures offer has not expired", async () => {
+    const ticketWallet = await TicketWallet.deployed();
+    const expiry = Math.floor(Date.now() / 1000) - 86400;
+    const ticketCost = 10000;
+    const retailTransactionFee = 100;
+    const transactionCost = ticketCost + retailTransactionFee;
 
+    let complete = false;
+
+    try {
+      await ticketWallet.createTicket(
+        "Anytime from Brighton to London",
+        expiry,
+        ticketCost,
+        0,
+        "ipfs://2fkfsd48f3654fsdx56f4gj3",
+        0, 
+        {
+          value: ticketCost,
+          from: owner
+        }
+      );
+      
+      complete = true;
+    }
+    catch (err) {}
+
+    assert.equal(complete, false);
   });
 
   xit("ensures the fulfilment method is valid", async () => {

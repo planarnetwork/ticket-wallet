@@ -103,8 +103,7 @@ contract TicketWallet is ERC721Token, Pausable {
     // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
       description: _description,
-      /* price: fullPrice, */
-      price: _price,
+      price: fullPrice,
       payloadUrl: _payloadUrl,
       state: TicketState.Paid,
       fulfilmentMethod: _fulfilmentMethod,
