@@ -86,23 +86,14 @@ contract TicketWallet is ERC721Token, Pausable {
     payable 
     returns (uint) 
   {
-    log("address", getAddressByRetailerId(_retailerId));    
-    log("sig", _signature);
-    log("sig-hash", keccak256(_signature));
-    log(
-      "result", 
-      ECTools.recoverSigner(
-        keccak256(_payloadUrl, _price, _expiry), 
-        _signature
+    require(
+      ECTools.isSignedBy(
+        keccak256("\x19Ethereum Signed Message:\n32", keccak256(_payloadUrl, _price, _expiry)),
+        _signature, 
+        getAddressByRetailerId(_retailerId)
       )
     );
-    /* require( */
-    ECTools.isSignedBy(
-      keccak256(_payloadUrl, _price, _expiry), 
-      _signature, 
-      getAddressByRetailerId(_retailerId)
-    );
-    /* );    */
+
     // solium-disable-next-line security/no-block-members
     require(_expiry > now);
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
@@ -179,7 +170,7 @@ contract TicketWallet is ERC721Token, Pausable {
     return tickets[_ticketId].fulfilmentUrl;
   }
   
-  event LogUint(string, uint);
+  /* event LogUint(string, uint);
   function log(string s, uint x) private {
     LogUint(s, x);
   }
@@ -211,5 +202,5 @@ contract TicketWallet is ERC721Token, Pausable {
   event LogString(string, string);
   function log(string s, string x) private {
     LogString(s, x);
-  }  
+  }   */
 }

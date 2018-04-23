@@ -10,13 +10,13 @@ library ECTools {
   function recoverSigner(bytes32 _hashedMsg, string _sig) public pure returns (address) {
     require(_hashedMsg != 0x00);
 
-    if (bytes(_sig).length != 130) {
+    if (bytes(_sig).length != 132) {
       return 0x0;
     }
     bytes32 r;
     bytes32 s;
     uint8 v;
-    bytes memory sig = hexstrToBytes(_sig);
+    bytes memory sig = hexstrToBytes(substring(_sig, 2, 132));
     assembly {
       r := mload(add(sig, 32))
       s := mload(add(sig, 64))
