@@ -1,4 +1,4 @@
-pragma solidity 0.4.19;
+pragma solidity ^0.4.21;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
@@ -9,8 +9,6 @@ import {ECTools} from "./ECTools.sol";
  * Manage the creation and storage of tickets.
  */
 contract TicketWallet is ERC721Token, Pausable {
-
-  string public constant name = "Ticket Wallet by Planar Network";
 
   /**
    * Ticket lifecycle
@@ -80,21 +78,31 @@ contract TicketWallet is ERC721Token, Pausable {
     uint _expiry,
     uint _price,
     uint _retailerId,
-    /* string _signature, */
     bytes32 _payloadUrl,
-    FulfilmentMethod _fulfilmentMethod
+    FulfilmentMethod _fulfilmentMethod,
+    string _signature
   ) 
     public 
     payable 
     returns (uint) 
   {
-    /* require(
-      ECTools.isSignedBy(
+    log("address", getAddressByRetailerId(_retailerId));    
+    log("sig", _signature);
+    log("sig-hash", keccak256(_signature));
+    log(
+      "result", 
+      ECTools.recoverSigner(
         keccak256(_payloadUrl, _price, _expiry), 
-        _signature, 
-        getAddressByRetailerId(_retailerId)
+        _signature
       )
-    ); */
+    );
+    /* require( */
+    ECTools.isSignedBy(
+      keccak256(_payloadUrl, _price, _expiry), 
+      _signature, 
+      getAddressByRetailerId(_retailerId)
+    );
+    /* );    */
     // solium-disable-next-line security/no-block-members
     require(_expiry > now);
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
@@ -170,4 +178,38 @@ contract TicketWallet is ERC721Token, Pausable {
 
     return tickets[_ticketId].fulfilmentUrl;
   }
+  
+  event LogUint(string, uint);
+  function log(string s, uint x) private {
+    LogUint(s, x);
+  }
+  
+  event LogInt(string, int);
+  function log(string s, int x) private {
+    LogInt(s, x);
+  }
+  
+  event LogBytes(string, bytes);
+  function log(string s, bytes x) private {
+    LogBytes(s, x);
+  }
+  
+  event LogBytes32(string, bytes32);
+  function log(string s, bytes32 x) private {
+    LogBytes32(s, x);
+  }
+
+  event LogAddress(string, address);
+  function log(string s, address x) private {
+    LogAddress(s, x);
+  }
+
+  event LogBool(string, bool);
+  function log(string s, bool x) private {
+    LogBool(s, x);
+  }  
+  event LogString(string, string);
+  function log(string s, string x) private {
+    LogString(s, x);
+  }  
 }

@@ -1,4 +1,4 @@
-pragma solidity 0.4.19;
+pragma solidity ^0.4.21;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
@@ -14,7 +14,6 @@ contract Retailers is ERC721Token, Pausable {
   struct Retailer {
     bytes32 name;
     uint txFeeAmount;
-    bytes32 pubKey;
   }
 
   /**
@@ -29,20 +28,17 @@ contract Retailers is ERC721Token, Pausable {
   function addRetailer(
     address _address,
     bytes32 _name,
-    uint _txFeeAmount,
-    bytes32 _pubKey
+    uint _txFeeAmount
   ) 
     public
     onlyOwner
     returns (uint retailerId) 
   {
     require(_name[0] != 0);
-    require(_pubKey[0] != 0);
 
     Retailer memory _retailer = Retailer({
       name: _name,
-      txFeeAmount: _txFeeAmount,
-      pubKey: _pubKey
+      txFeeAmount: _txFeeAmount
     });
     uint256 opId = retailers.push(_retailer) - 1;
 
@@ -79,17 +75,4 @@ contract Retailers is ERC721Token, Pausable {
     retailers[_retailerId].txFeeAmount = _txFeeAmount;
   }
 
-  /**
-   * Get a retailers public key
-   */
-  function pubKeyById(uint _retailerId) public constant returns(bytes32) {
-    return retailers[_retailerId].pubKey;
-  }
-
-  /**
-   * Set the retailers public key
-   */
-  function setPubKey(uint _retailerId, bytes32 _pubKey) public onlyOwnerOf(_retailerId) {
-    retailers[_retailerId].pubKey = _pubKey;
-  }
 }

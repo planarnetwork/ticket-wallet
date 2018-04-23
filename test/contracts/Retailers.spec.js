@@ -9,21 +9,18 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
     await retailers.addRetailer(
       retailer,
       "A Retailer",
-      10000,
-      "5d4f6s8df4524w6fd5s4f6ws8e4f65s4"
+      10000
     );
     
-    const [address, name, fee, publicKey] = await Promise.all([
+    const [address, name, fee] = await Promise.all([
       retailers.ownerOf(0),
       retailers.nameById(0),
-      retailers.txFeeAmountById(0),
-      retailers.pubKeyById(0)
+      retailers.txFeeAmountById(0)
     ]);
     
     assert.equal(address, retailer);
     assert.equal(toAscii(name), "A Retailer");
     assert.equal(fee, 10000);
-    assert.equal(toAscii(publicKey), "5d4f6s8df4524w6fd5s4f6ws8e4f65s4");
   });
 
   it("sets a retailer's name", async () => {
@@ -66,29 +63,6 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
     
     try {
       await retailers.setTxFeeAmountById(0, 100, { from: owner });
-      set = true;
-    }
-    catch (err) {}
-    
-    assert.equal(set, false);
-  });
-
-  it("sets a retailer's public key", async () => {
-    const retailers = await Retailers.deployed();
-    
-    await retailers.setPubKey(0, "46f5d44e554gju421334151as534f5j6", { from: retailer });
-    
-    const key = await retailers.pubKeyById(0);
-    
-    assert.equal(toAscii(key), "46f5d44e554gju421334151as534f5j6");
-  });
-
-  it("ensures only the retailer can change their public key", async () => {
-    const retailers = await Retailers.deployed();
-    let set = false;
-    
-    try {
-      await retailers.setPubKey(0, "46f5d44e554gju421334151as534f5j6", { from: owner });
       set = true;
     }
     catch (err) {}
