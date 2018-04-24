@@ -1,4 +1,4 @@
-pragma solidity 0.4.19;
+pragma solidity ^0.4.21;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
@@ -9,8 +9,6 @@ import {ECTools} from "./ECTools.sol";
  * Manage the creation and storage of tickets.
  */
 contract TicketWallet is ERC721Token, Pausable {
-
-  string public constant name = "Ticket Wallet by Planar Network";
 
   /**
    * Ticket lifecycle
@@ -80,9 +78,9 @@ contract TicketWallet is ERC721Token, Pausable {
     uint _expiry,
     uint _price,
     uint _retailerId,
-    string _signature,
     bytes32 _payloadUrl,
-    FulfilmentMethod _fulfilmentMethod
+    FulfilmentMethod _fulfilmentMethod,
+    string _signature
   ) 
     public 
     payable 
@@ -90,13 +88,14 @@ contract TicketWallet is ERC721Token, Pausable {
   {
     require(
       ECTools.isSignedBy(
-        keccak256(_payloadUrl, _price, _expiry), 
+        keccak256("\x19Ethereum Signed Message:\n32", keccak256(_payloadUrl, _price, _expiry)),
         _signature, 
         getAddressByRetailerId(_retailerId)
       )
     );
+
     // solium-disable-next-line security/no-block-members
-    require(_expiry < now);
+    require(_expiry > now);
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
     require(msg.value == fullPrice);
 
@@ -130,14 +129,14 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Get Retailer's address by retailerId
    */
-  function getAddressByRetailerId(uint _retailerId) public constant returns (address) {
+  function getAddressByRetailerId(uint _retailerId) private view returns (address) {
     return Retailers(retailers).ownerOf(_retailerId);
   }
 
   /**
    * Get Retailer's transaction fee amount by retailerId
    */
-  function getTxFeeAmountByRetailerId(uint _retailerId) public constant returns (uint) {
+  function getTxFeeAmountByRetailerId(uint _retailerId) private view returns (uint) {
     return Retailers(retailers).txFeeAmountById(_retailerId);
   }
 
@@ -151,23 +150,24 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Return the description of the ticket 
    */
-  function getTicketDescriptionById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
+  function getTicketDescriptionById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
     return tickets[_ticketId].description;
   }
 
   /**
    * Return the URL of the full ticket details
    */
-  function getTicketPayloadUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
+  function getTicketPayloadUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
     return tickets[_ticketId].payloadUrl;
   }
   
   /**
    * Return the URL containing the fulfilment information
    */
-  function getFulfilmentUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) constant returns (bytes32) {
+  function getFulfilmentUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
     require(tickets[_ticketId].state == TicketState.Fulfilled);
 
     return tickets[_ticketId].fulfilmentUrl;
   }
+
 }
