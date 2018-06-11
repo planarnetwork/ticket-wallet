@@ -84,7 +84,7 @@ library ECTools {
     uint len = bytes(_msg).length;
     require(len > 0);
     bytes memory prefix = "\x19Ethereum Signed Message:\n";
-    return keccak256(prefix, uintToString(len), _msg);
+    return keccak256(abi.encodePacked(prefix, uintToString(len), _msg));
   }
 
   // @dev Converts a uint in a string

@@ -89,7 +89,7 @@ contract("TicketWallet", ([owner, retailer]) => {
         "ipfs://2fkfsd48f3654fsdx56f4gj3",
         0, 
         {
-          value: ticketCost,
+          value: transactionCost,
           from: owner
         }
       );
