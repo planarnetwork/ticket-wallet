@@ -36,7 +36,7 @@
     "solium": "^1.1.7",
     "truffle": "^4.1.11",
     "web3-utils": "^1.0.0-beta.34",
-    "zeppelin-solidity": "1.6.0"
+    "zeppelin-solidity": "^1.10.0"
   },
   "dependencies": {},
   "directories": {

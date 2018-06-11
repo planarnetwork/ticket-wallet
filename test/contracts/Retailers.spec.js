@@ -73,7 +73,7 @@ contract("Retailers", ([owner, retailer, newRetailerAddress]) => {
   it("transfer ownership of a retailer", async () => {
     const retailers = await Retailers.deployed();
     
-    await retailers.transfer(newRetailerAddress, 0, { from: retailer });
+    await retailers.transferFrom(retailer, newRetailerAddress, 0, { from: retailer });
     
     const address = await retailers.ownerOf(0);
     

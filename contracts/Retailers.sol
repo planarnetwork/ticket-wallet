@@ -6,7 +6,7 @@ import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
 /**
  * Maintains a list of authorised ticket retailers
  */
-contract Retailers is ERC721Token, Pausable {
+contract Retailers is ERC721Token("Ticket retailers", "PLNR-RETAILER"), Pausable {
 
   /**
    * Retailer details

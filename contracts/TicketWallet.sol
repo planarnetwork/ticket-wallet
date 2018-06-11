@@ -8,7 +8,7 @@ import {ECTools} from "./ECTools.sol";
 /**
  * Manage the creation and storage of tickets.
  */
-contract TicketWallet is ERC721Token, Pausable {
+contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
 
   /**
    * Ticket lifecycle
