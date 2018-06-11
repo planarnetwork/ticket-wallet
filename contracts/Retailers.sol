@@ -50,7 +50,7 @@ contract Retailers is ERC721Token, Pausable {
   /**
    * Get the name of the given retailer
    */
-  function nameById(uint _retailerId) public constant returns(bytes32) {
+  function nameById(uint _retailerId) public view returns(bytes32) {
     return retailers[_retailerId].name;
   }
 
@@ -64,7 +64,7 @@ contract Retailers is ERC721Token, Pausable {
   /**
    * Get the transaction fee charged by a retailer
    */
-  function txFeeAmountById(uint _retailerId) public constant returns(uint) {
+  function txFeeAmountById(uint _retailerId) public view returns(uint) {
     return retailers[_retailerId].txFeeAmount;
   }
 

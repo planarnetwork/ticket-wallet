@@ -63,7 +63,7 @@ contract TicketWallet is ERC721Token, Pausable {
   /**
    * Store a reference to the ERC-721 index of authorised retailers
    */
-  function TicketWallet(address _retailers) public {
+  constructor(address _retailers) public {
     retailers = _retailers;
   }
 
