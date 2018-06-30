@@ -1,8 +1,8 @@
 {
-  "name": "@planar/ticket-wallet",
-  "version": "0.9.0",
+  "name": "planar-ticket-wallet",
+  "version": "0.9.1",
   "description": "Planar Network Ticket Wallet",
-  "main": "build/index.js",
+  "main": "testnet.js",
   "scripts": {
     "test": "ganache-cli > /dev/null & npm run lint && truffle test && pkill -f ganache-cli",
     "build": "npm run lint && npm run compile",
