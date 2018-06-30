@@ -38,7 +38,9 @@
     "web3-utils": "^1.0.0-beta.34",
     "zeppelin-solidity": "^1.10.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "truffle-hdwallet-provider": "0.0.5"
+  },
   "directories": {
     "doc": "docs",
     "test": "test"
