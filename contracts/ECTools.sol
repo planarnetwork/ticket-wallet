@@ -1,5 +1,4 @@
-pragma solidity ^0.4.21;
-
+pragma solidity ^0.4.24;
 
 /* solium-disable */
 // @credit https://gist.github.com/axic/5b33912c6f61ae6fd96d6c4a47afde6d#gistcomment-2314412

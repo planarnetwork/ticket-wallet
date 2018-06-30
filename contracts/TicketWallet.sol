@@ -1,4 +1,4 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.24;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import {Pausable} from "zeppelin-solidity/contracts/lifecycle/Pausable.sol";
