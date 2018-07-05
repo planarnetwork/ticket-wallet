@@ -16,11 +16,6 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
   enum TicketState {Paid, Fulfilled, Cancelled}
 
   /**
-   * Methods of ticket fulfilment
-   */
-  enum FulfilmentMethod {eTicket, SelfPrint, ToD}
-
-  /**
    * Ensure the given message sender is the owner or retailer of the token
    */
   modifier onlyRetailerOrOwnerOf(uint256 _ticketId) {
@@ -45,7 +40,6 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
     bytes32 payloadUrl;
     TicketState state;
     uint created;
-    FulfilmentMethod fulfilmentMethod;
     bytes32 fulfilmentUrl;
     uint retailerId;
   }
@@ -79,7 +73,6 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
     uint _price,
     uint _retailerId,
     bytes32 _payloadUrl,
-    FulfilmentMethod _fulfilmentMethod,
     string _signature
   ) 
     public 
@@ -88,27 +81,19 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
   {
     bytes32 _expectedHash = keccak256(abi.encodePacked(_payloadUrl, _price, _expiry));
     bytes32 _expectedSignature = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", _expectedHash));
+    address _retailerAddress = getAddressByRetailerId(_retailerId);
 
-    require(
-      ECTools.isSignedBy(
-        _expectedSignature,
-        _signature, 
-        getAddressByRetailerId(_retailerId)
-      )
-    );
+    require(ECTools.isSignedBy(_expectedSignature, _signature, _retailerAddress));
 
-    // solium-disable-next-line security/no-block-members
     require(_expiry > now);
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
     require(msg.value == fullPrice);
 
-    // solium-disable security/no-block-members
     Ticket memory _ticket = Ticket({
       description: _description,
       price: fullPrice,
       payloadUrl: _payloadUrl,
       state: TicketState.Paid,
-      fulfilmentMethod: _fulfilmentMethod,
       fulfilmentUrl: 0,
       created: now,
       retailerId: _retailerId
@@ -117,6 +102,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
     uint256 ticketId = tickets.push(_ticket) - 1;
 
     _mint(msg.sender, ticketId);
+    _retailerAddress.transfer(fullPrice);
 
     return ticketId;
   }
