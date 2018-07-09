@@ -79,7 +79,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
     payable 
     returns (uint) 
   {
-    bytes32 _expectedHash = keccak256(abi.encodePacked(_payloadUrl, _price, _expiry));
+    bytes32 _expectedHash = keccak256(abi.encodePacked(_payloadUrl, "_", _price, "_", _expiry));
     bytes32 _expectedSignature = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", _expectedHash));
     address _retailerAddress = getAddressByRetailerId(_retailerId);
 
