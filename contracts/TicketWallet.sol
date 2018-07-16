@@ -19,7 +19,9 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
    * Ensure the given message sender is the owner or retailer of the token
    */
   modifier onlyRetailerOrOwnerOf(uint256 _ticketId) {
-    require(getAddressByRetailerId(tickets[_ticketId].retailerId) == msg.sender || ownerOf(_ticketId) == msg.sender);
+    address _retailer = getAddressByRetailerId(tickets[_ticketId].retailerId);
+
+    require(_retailer == msg.sender || ownerOf(_ticketId) == msg.sender, "Must be owner or retailer");
     _;
   }
 
@@ -27,7 +29,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
    * Ensure the given message sender is the retailer of the token
    */
   modifier onlyRetailerOf(uint256 _ticketId) {
-    require(getAddressByRetailerId(tickets[_ticketId].retailerId) == msg.sender);
+    require(getAddressByRetailerId(tickets[_ticketId].retailerId) == msg.sender, "Must be retailer");
     _;
   }
 
@@ -87,11 +89,11 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
     bytes32 _expectedSignature = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", _expectedHash));
     address _retailerAddress = getAddressByRetailerId(_retailerId);
 
-    require(ECTools.isSignedBy(_expectedSignature, _signature, _retailerAddress));
+    require(ECTools.isSignedBy(_expectedSignature, _signature, _retailerAddress), "Invalid signature");
 
-    require(_expiry > now);
+    require(_expiry > now, "Offer has expired");
     uint fullPrice = _price + getTxFeeAmountByRetailerId(_retailerId);
-    require(msg.value == fullPrice);
+    require(msg.value == fullPrice, "Transaction value must cover ticket price and transaction fee");
 
     Ticket memory _ticket = Ticket({
       description: _description,
@@ -118,8 +120,8 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
   function fulfilTicket(uint256 _ticketId, bytes32 _fulfilmentUrl) public onlyRetailerOf(_ticketId) {
     uint _indexInFulfilmentQueue = getQueueIndex(_ticketId);
 
-    require(_indexInFulfilmentQueue != fulfilment[msg.sender].length);
-    require(tickets[_ticketId].state == TicketState.Paid);
+    require(_indexInFulfilmentQueue != fulfilment[msg.sender].length, "Ticket must be queued for fulfilment");
+    require(tickets[_ticketId].state == TicketState.Paid, "Ticket state must be Paid");
 
     tickets[_ticketId].state = TicketState.Fulfilled;
     tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
@@ -156,7 +158,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
    * Cancel the ticket
    */
   function cancelTicket(uint256 _ticketId) public onlyRetailerOf(_ticketId) {
-    require(tickets[_ticketId].state == TicketState.Fulfilled);
+    require(tickets[_ticketId].state == TicketState.Fulfilled, "Ticket state must be fulfilled");
 
     tickets[_ticketId].state = TicketState.Cancelled;
     tickets[_ticketId].fulfilmentUrl = "";
@@ -208,7 +210,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET"), Pausable {
    * Return the URL containing the fulfilment information
    */
   function getFulfilmentUrlById(uint256 _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
-    require(tickets[_ticketId].state == TicketState.Fulfilled);
+    require(tickets[_ticketId].state == TicketState.Fulfilled, "Ticket state must be fulfilled");
 
     return tickets[_ticketId].fulfilmentUrl;
   }

@@ -34,7 +34,7 @@ contract Retailers is ERC721Token("Ticket retailers", "PLNR-RETAILER"), Pausable
     onlyOwner
     returns (uint retailerId) 
   {
-    require(_name[0] != 0);
+    require(_name[0] != 0, "Name must not be an empty string");
 
     Retailer memory _retailer = Retailer({
       name: _name,

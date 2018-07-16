@@ -31,8 +31,8 @@
   "homepage": "https://github.com/planarnetwork/ticket-wallet",
   "devDependencies": {
     "eth-gas-reporter": "^0.1.9",
-    "ganache-cli": "^6.1.4",
-    "solium": "^1.1.7",
+    "ganache-cli": "^6.1.6",
+    "solium": "^1.1.8",
     "truffle": "^4.1.13",
     "web3-utils": "^1.0.0-beta.34",
     "zeppelin-solidity": "^1.10.0"
