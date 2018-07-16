@@ -126,13 +126,54 @@ contract("TicketWallet", ([owner, retailer]) => {
 
     assert.equal(complete, false);
   });
-  
-  xit("retailer can mark the order as fulfilled", async () => {
-  
+
+  it("retailers can access their fulfilment queue", async () => {
+    const ticketWallet = await TicketWallet.deployed();
+    const items = await ticketWallet.getFulfilmentQueue({ from: retailer });
+
+    assert.equal(items.length, 1);
+
+    const payloadUrl = await ticketWallet.getTicketPayloadUrlById(items[0].toNumber(), { from: retailer });
+
+    assert.equal(toAscii(payloadUrl), "ipfs://2fkfsd");
   });
 
-  xit("retailer can mark the order as cancelled", async () => {
+  it("retailer can mark the order as fulfilled", async () => {
+    const ticketWallet = await TicketWallet.deployed();
+    const items = await ticketWallet.getFulfilmentQueue({ from: retailer });
 
+    assert.equal(items.length, 1);
+
+    const ticketId = items[0].toNumber();
+    const inputState = await ticketWallet.getTicketStateById(ticketId, { from: retailer });
+
+    assert.equal(inputState.toNumber(), 0);
+
+    await ticketWallet.fulfilTicket(ticketId, toBytes32("ipfs://fulfilment"), { from: retailer });
+    const outputState = await ticketWallet.getTicketStateById(ticketId, { from: retailer });
+
+    assert.equal(outputState.toNumber(), 1);
+
+    const fulfilmentUrl = await ticketWallet.getFulfilmentUrlById(ticketId, { from: owner });
+
+    assert.equal(toAscii(fulfilmentUrl), "ipfs://fulfilment");
+
+    const queue = await ticketWallet.getFulfilmentQueue({ from: retailer });
+
+    assert.equal(queue.length, 0);
+  });
+
+  it("retailer can mark the order as cancelled", async () => {
+    const ticketWallet = await TicketWallet.deployed();
+    const ticketId = 0;
+    const inputState = await ticketWallet.getTicketStateById(ticketId, { from: retailer });
+
+    assert.equal(inputState.toNumber(), 1);
+
+    await ticketWallet.cancelTicket(ticketId, { from: retailer });
+    const outputState = await ticketWallet.getTicketStateById(ticketId, { from: retailer });
+
+    assert.equal(outputState.toNumber(), 2);
   });
 
 });
