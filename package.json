@@ -1,6 +1,6 @@
 {
-  "name": "planar-ticket-wallet",
-  "version": "0.10.0",
+  "name": "@planar/ticket-wallet",
+  "version": "0.1.0",
   "description": "Planar Network Ticket Wallet",
   "main": "build/index.js",
   "scripts": {
