@@ -13,7 +13,7 @@ async function writeIndex() {
     const contractName = file.substring(0, file.length - 5);
     const contents =  await readFile(contractDirectory + file, "utf8");
       
-    contracts.push(`export const ${contractName} = ${contents};`);
+    contracts.push(`exports.${contractName} = ${contents};`);
   }
   
   return writeFile(__dirname + "/build/index.js", contracts.join("\n"));
