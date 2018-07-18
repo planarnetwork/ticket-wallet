@@ -1,6 +1,5 @@
-var HDWalletProvider = require("truffle-hdwallet-provider");
-
-var mnemonic = "###";
+const HDWalletProvider = require("truffle-hdwallet-provider");
+const infura = require("./infura");
 
 module.exports = {
   networks: {
@@ -10,11 +9,9 @@ module.exports = {
       network_id: "*"
     },
     test: {
-      provider: function() {
-        return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/VfWYr7OjdspjLol0LX6t");
-      },
+      provider: new HDWalletProvider(infura.mnemonic, infura.url),
       network_id: 3,
-      gas: 4700000
+      gas: 2700000
     }
   },
   mocha: {
