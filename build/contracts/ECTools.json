@@ -286,10 +286,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "386:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -732,24 +732,6 @@
                         "declaration": 36,
                         "isOffset": false,
                         "isSlot": false,
-                        "src": "619:3:0",
-                        "valueSize": 1
-                      }
-                    },
-                    {
-                      "r": {
-                        "declaration": 27,
-                        "isOffset": false,
-                        "isSlot": false,
-                        "src": "604:1:0",
-                        "valueSize": 1
-                      }
-                    },
-                    {
-                      "sig": {
-                        "declaration": 36,
-                        "isOffset": false,
-                        "isSlot": false,
                         "src": "650:3:0",
                         "valueSize": 1
                       }
@@ -760,6 +742,24 @@
                         "isOffset": false,
                         "isSlot": false,
                         "src": "635:1:0",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "sig": {
+                        "declaration": 36,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "619:3:0",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "r": {
+                        "declaration": 27,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "604:1:0",
                         "valueSize": 1
                       }
                     },
@@ -1137,7 +1137,7 @@
                       "name": "ecrecover",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2264,
+                      "referencedDeclaration": 2207,
                       "src": "808:9:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_ecrecover_pure$_t_bytes32_$_t_uint8_$_t_bytes32_$_t_bytes32_$returns$_t_address_$",
@@ -1344,10 +1344,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "1006:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1823,10 +1823,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "1242:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -3862,10 +3862,10 @@
                                 "name": "revert",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [
-                                  2277,
-                                  2278
+                                  2220,
+                                  2221
                                 ],
-                                "referencedDeclaration": 2277,
+                                "referencedDeclaration": 2220,
                                 "src": "2146:6:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_revert_pure$__$returns$__$",
@@ -4774,10 +4774,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "2690:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -4960,7 +4960,7 @@
                             "name": "abi",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2259,
+                            "referencedDeclaration": 2202,
                             "src": "2789:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_abi",
@@ -5007,7 +5007,7 @@
                       "name": "keccak256",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2266,
+                      "referencedDeclaration": 2209,
                       "src": "2779:9:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_sha3_pure$__$returns$_t_bytes32_$",
@@ -6307,10 +6307,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "3527:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -6401,10 +6401,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "3566:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -6506,10 +6506,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "3597:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -7239,10 +7239,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "386:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -7685,24 +7685,6 @@
                         "declaration": 36,
                         "isOffset": false,
                         "isSlot": false,
-                        "src": "619:3:0",
-                        "valueSize": 1
-                      }
-                    },
-                    {
-                      "r": {
-                        "declaration": 27,
-                        "isOffset": false,
-                        "isSlot": false,
-                        "src": "604:1:0",
-                        "valueSize": 1
-                      }
-                    },
-                    {
-                      "sig": {
-                        "declaration": 36,
-                        "isOffset": false,
-                        "isSlot": false,
                         "src": "650:3:0",
                         "valueSize": 1
                       }
@@ -7713,6 +7695,24 @@
                         "isOffset": false,
                         "isSlot": false,
                         "src": "635:1:0",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "sig": {
+                        "declaration": 36,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "619:3:0",
+                        "valueSize": 1
+                      }
+                    },
+                    {
+                      "r": {
+                        "declaration": 27,
+                        "isOffset": false,
+                        "isSlot": false,
+                        "src": "604:1:0",
                         "valueSize": 1
                       }
                     },
@@ -8090,7 +8090,7 @@
                       "name": "ecrecover",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2264,
+                      "referencedDeclaration": 2207,
                       "src": "808:9:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_ecrecover_pure$_t_bytes32_$_t_uint8_$_t_bytes32_$_t_bytes32_$returns$_t_address_$",
@@ -8297,10 +8297,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "1006:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -8776,10 +8776,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "1242:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -10815,10 +10815,10 @@
                                 "name": "revert",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [
-                                  2277,
-                                  2278
+                                  2220,
+                                  2221
                                 ],
-                                "referencedDeclaration": 2277,
+                                "referencedDeclaration": 2220,
                                 "src": "2146:6:0",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_function_revert_pure$__$returns$__$",
@@ -11727,10 +11727,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "2690:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -11913,7 +11913,7 @@
                             "name": "abi",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2259,
+                            "referencedDeclaration": 2202,
                             "src": "2789:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_abi",
@@ -11960,7 +11960,7 @@
                       "name": "keccak256",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2266,
+                      "referencedDeclaration": 2209,
                       "src": "2779:9:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_sha3_pure$__$returns$_t_bytes32_$",
@@ -13260,10 +13260,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "3527:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -13354,10 +13354,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "3566:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -13459,10 +13459,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2275,
-                        2276
+                        2218,
+                        2219
                       ],
-                      "referencedDeclaration": 2275,
+                      "referencedDeclaration": 2218,
                       "src": "3597:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -14092,5 +14092,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-19T06:36:39.949Z"
+  "updatedAt": "2018-07-19T13:06:44.998Z"
 }

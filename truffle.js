@@ -9,7 +9,7 @@ module.exports = {
       network_id: "*"
     },
     test: {
-      provider: new HDWalletProvider(infura.mnemonic, infura.url),
+      provider: () => new HDWalletProvider(infura.mnemonic, infura.url),
       network_id: 3,
       gas: 2700000
     }
