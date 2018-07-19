@@ -14601,9 +14601,16 @@ exports.ECTools = {
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0x46740227d75326ec075698bafed3d5ffb5f16314",
+      "transactionHash": "0x7fd1ec413a3ea3cfaac0adc672b82bbd23fa4d1887b7e4b4cfed4c8c94843fa0"
+    }
+  },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-19T13:06:44.998Z"
+  "updatedAt": "2018-07-19T13:34:39.673Z"
 };
 exports.ERC721 = {
   "contractName": "ERC721",
@@ -49938,9 +49945,16 @@ exports.Migrations = {
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0x7993c56dd673f694756463518e9d84b9c91ac9a8",
+      "transactionHash": "0x48bd9cc7363d8cb1dc9ef8a4dd0336fac3cbb086fe2689203fccb608202dc591"
+    }
+  },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-19T06:36:39.953Z"
+  "updatedAt": "2018-07-19T13:34:39.639Z"
 };
 exports.SafeMath = {
   "contractName": "SafeMath",
@@ -65228,7 +65242,16 @@ exports.TicketWallet = {
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {
+        "ECTools": "0x46740227d75326ec075698bafed3d5ffb5f16314"
+      },
+      "address": "0x8b98f3a91ebfa33cca7867a8085760a356655c83",
+      "transactionHash": "0x3cdeb9e35d6149de104a5825d77ab8a6e069f4b6c7967210c0867d26a01d130f"
+    }
+  },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-19T13:06:44.994Z"
+  "updatedAt": "2018-07-19T13:34:39.659Z"
 };
