@@ -18,7 +18,7 @@ module.exports = {
     reporter: "eth-gas-reporter",
     reporterOptions : {
       currency: "USD",
-      gasPrice: 21
+      gasPrice: 5
     }
   },
   solc: { optimizer: { enabled: true, runs: 200 } }

@@ -1,6 +1,6 @@
 {
   "name": "@planar/ticket-wallet",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Planar Network Ticket Wallet",
   "main": "./build/index.js",
   "scripts": {
@@ -31,17 +31,15 @@
   },
   "homepage": "https://github.com/planarnetwork/ticket-wallet",
   "devDependencies": {
-    "eth-gas-reporter": "^0.1.9",
+    "eth-gas-reporter": "^0.1.10",
     "ganache-cli": "^6.1.6",
     "solium": "^1.1.8",
     "truffle": "^4.1.13",
-    "web3": "^1.0.0-beta.34",
+    "truffle-hdwallet-provider": "0.0.5",
     "web3-utils": "^1.0.0-beta.34",
     "zeppelin-solidity": "^1.10.0"
   },
-  "dependencies": {
-    "truffle-hdwallet-provider": "0.0.5"
-  },
+  "dependencies": {},
   "directories": {
     "doc": "docs",
     "test": "test"
