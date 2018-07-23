@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
-import {ECTools} from "./ECTools.sol";
+import {ECRecovery} from "zeppelin-solidity/contracts/ECRecovery.sol";
 
 /**
  * Manage the creation and storage of tickets.
@@ -33,11 +33,10 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
    * Ticket information
    */
   struct Ticket {
-    bytes32 description;
+    string description;
     uint price;
-    bytes32 itemUrl;
     TicketState state;
-    bytes32 fulfilmentUrl;
+    string fulfilmentURI;
     address retailer;
   }
 
@@ -58,54 +57,52 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
    * ticket and store it in the contract storage.
    */
   function createTicket(
-    bytes32 _description,
+    string _description,
+    string _itemUrl,
     uint _expiry,
-    uint _price,
     address _retailer,
-    bytes32 _itemUrl,
-    string _signature
+    bytes _signature
   ) 
     public 
     payable 
     returns (uint) 
   {
-    bytes32 _expectedHash = keccak256(abi.encodePacked(_itemUrl, "_", _price, "_", _expiry));
+    bytes32 _expectedHash = keccak256(abi.encodePacked(_itemUrl, "_", msg.value, "_", _expiry));
     bytes32 _expectedSignature = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", _expectedHash));
 
-    require(ECTools.isSignedBy(_expectedSignature, _signature, _retailer), "Invalid signature");
+    require(ECRecovery.recover(_expectedSignature, _signature) == _retailer, "Invalid signature");
     require(_expiry > now, "Offer has expired");
-    require(msg.value == _price, "Transaction value must cover the price of the item");
 
     Ticket memory _ticket = Ticket({
       description: _description,
-      price: _price,
-      itemUrl: _itemUrl,
+      price: msg.value,
       state: TicketState.Paid,
-      fulfilmentUrl: "",
+      fulfilmentURI: "",
       retailer: _retailer
     });
 
-    uint ticketId = tickets.push(_ticket) - 1;
+    uint _ticketId = tickets.push(_ticket) - 1;
 
-    _mint(msg.sender, ticketId);
-    _retailer.transfer(_price);
+    _mint(msg.sender, _ticketId);
+    _setTokenURI(_ticketId, _itemUrl);
+    _retailer.transfer(msg.value);
 
-    fulfilment[_retailer].push(ticketId);
+    fulfilment[_retailer].push(_ticketId);
 
-    return ticketId;
+    return _ticketId;
   }
 
   /**
    * Fulfil the ticket and attach the fulfilment URL
    */
-  function fulfilTicket(uint _ticketId, bytes32 _fulfilmentUrl) public onlyRetailerOf(_ticketId) {
+  function fulfilTicket(uint _ticketId, string _fulfilmentURI) public onlyRetailerOf(_ticketId) {
     uint _indexInFulfilmentQueue = getQueueIndex(_ticketId);
 
     require(_indexInFulfilmentQueue != fulfilment[msg.sender].length, "Ticket must be queued for fulfilment");
     require(tickets[_ticketId].state == TicketState.Paid, "Ticket state must be Paid");
 
     tickets[_ticketId].state = TicketState.Fulfilled;
-    tickets[_ticketId].fulfilmentUrl = _fulfilmentUrl;
+    tickets[_ticketId].fulfilmentURI = _fulfilmentURI;
 
     removeFromQueue(_indexInFulfilmentQueue);
   }
@@ -113,7 +110,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   /**
    * Get the index of the ticket in the queue
    */
-  function getQueueIndex(uint _ticketId) public view returns (uint) {
+  function getQueueIndex(uint _ticketId) private view returns (uint) {
     for (uint i = 0; i < fulfilment[msg.sender].length; i++) {
       if (fulfilment[msg.sender][i] == _ticketId) {
         return i;
@@ -142,21 +139,14 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
     require(tickets[_ticketId].state == TicketState.Fulfilled, "Ticket state must be fulfilled");
 
     tickets[_ticketId].state = TicketState.Cancelled;
-    tickets[_ticketId].fulfilmentUrl = "";
+    tickets[_ticketId].fulfilmentURI = "";
   }
 
   /**
    * Return the description of the ticket 
    */
-  function getTicketDescriptionById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
+  function getTicketDescriptionById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (string) {
     return tickets[_ticketId].description;
-  }
-
-  /**
-   * Return the URL of the full ticket details
-   */
-  function getTicketPayloadUrlById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
-    return tickets[_ticketId].itemUrl;
   }
 
   /**
@@ -167,12 +157,12 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   }
   
   /**
-   * Return the URL containing the fulfilment information
+   * Return the URI containing the fulfilment information
    */
-  function getFulfilmentUrlById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (bytes32) {
+  function getFulfilmentURIById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (string) {
     require(tickets[_ticketId].state == TicketState.Fulfilled, "Ticket state must be fulfilled");
 
-    return tickets[_ticketId].fulfilmentUrl;
+    return tickets[_ticketId].fulfilmentURI;
   }
 
   /**

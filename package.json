@@ -1,14 +1,14 @@
 {
   "name": "@planar/ticket-wallet",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Planar Network Ticket Wallet",
   "main": "./build/index.js",
   "scripts": {
     "test": "ganache-cli > /dev/null & npm run lint && truffle test && pkill -f ganache-cli",
-    "build": "npm run lint && npm run compile",
+    "build": "npm run lint && npm run compile && node index.js",
     "compile": "truffle compile",
     "lint": "solium -d contracts/",
-    "prepublishOnly": "npm run build && node index.js"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/planarnetwork/ticket-wallet",
   "devDependencies": {
+    "eth-crypto": "^1.2.3",
     "eth-gas-reporter": "^0.1.10",
     "ganache-cli": "^6.1.6",
     "solium": "^1.1.8",

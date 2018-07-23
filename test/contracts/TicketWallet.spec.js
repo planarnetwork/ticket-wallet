@@ -1,6 +1,4 @@
-const {toAscii, toBytes32} = require("../util/String.js");
 const TicketWallet = artifacts.require("TicketWallet.sol");
-const ECTools = artifacts.require("ECTools.sol");
 const Web3Utils = require('web3-utils');
 
 contract("TicketWallet", ([owner, retailer]) => {
@@ -12,26 +10,25 @@ contract("TicketWallet", ([owner, retailer]) => {
     const ticketCostWei = Web3Utils.toWei(ticketCostEth.toString(), "ether");
     const ticketDescription = "Anytime from Brighton to London";
     const ticketPayload = "ipfs://2fkfsd";
-    const hash = Web3Utils.soliditySha3(toBytes32(ticketPayload), "_", ticketCostWei, "_", expiry);
+    const hash = Web3Utils.soliditySha3(ticketPayload, "_", ticketCostWei, "_", expiry);
     const signature = web3.eth.sign(retailer, hash);
     const originalWei = await web3.eth.getBalance(retailer);
 
     await ticketWallet.createTicket(
       ticketDescription,
-      expiry,
-      ticketCostWei,
-      retailer,
       ticketPayload,
+      expiry,
+      retailer,
       signature,
       {
         value: ticketCostWei,
         from: owner
       }
     );
-    
+
     const [description, payloadUrl] = await Promise.all([
       ticketWallet.getTicketDescriptionById(0, { from: owner }),
-      ticketWallet.getTicketPayloadUrlById(0, { from: owner })
+      ticketWallet.tokenURI(0, { from: owner })
     ]);
 
     const finalWei = await web3.eth.getBalance(retailer);
@@ -39,18 +36,18 @@ contract("TicketWallet", ([owner, retailer]) => {
     const expectedWei = Web3Utils.toWei(expectedEth.toString(), "ether");
 
     assert.equal(finalWei.toNumber(), expectedWei);
-    assert.equal(toAscii(description), ticketDescription);
-    assert.equal(toAscii(payloadUrl), ticketPayload);
+    assert.equal(description, ticketDescription);
+    assert.equal(payloadUrl, ticketPayload);
   });
   
-  it("ensures amount sent covers the cost of the ticket and the transaction fee", async () => {
+  it("ensures amount sent covers the cost of the ticket", async () => {
     const ticketWallet = await TicketWallet.deployed();
     const expiry = Math.floor(Date.now() / 1000) + 86400;
     const ticketCostEth = 10;
     const ticketCostWei = Web3Utils.toWei(ticketCostEth.toString(), "ether");
     const ticketDescription = "Anytime from Brighton to London";
     const ticketPayload = "ipfs://2fkfsd";
-    const hash = Web3Utils.soliditySha3(toBytes32(ticketPayload), "_", ticketCostWei, "_", expiry);
+    const hash = Web3Utils.soliditySha3(ticketPayload, "_", ticketCostWei, "_", expiry);
     const signature = web3.eth.sign(retailer, hash);
 
     let complete = false;
@@ -58,10 +55,9 @@ contract("TicketWallet", ([owner, retailer]) => {
     try {
       await ticketWallet.createTicket(
         ticketDescription,
-        expiry,
-        ticketCostWei,
-        retailer,
         ticketPayload,
+        expiry,
+        retailer,
         signature,
         {
           value: Web3Utils.toWei("9"),
@@ -83,7 +79,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     const ticketCostWei = Web3Utils.toWei(ticketCostEth.toString(), "ether");
     const ticketDescription = "Anytime from Brighton to London";
     const ticketPayload = "ipfs://2fkfsd";
-    const hash = Web3Utils.soliditySha3(toBytes32(ticketPayload), "_", ticketCostWei, "_", expiry);
+    const hash = Web3Utils.soliditySha3(ticketPayload, "_", ticketCostWei, "_", expiry);
     const signature = web3.eth.sign(retailer, hash);
 
     let complete = false;
@@ -91,10 +87,9 @@ contract("TicketWallet", ([owner, retailer]) => {
     try {
       await ticketWallet.createTicket(
         ticketDescription,
-        expiry,
-        ticketCostWei,
-        retailer,
         ticketPayload,
+        expiry,
+        retailer,
         signature,
         {
           value: ticketCostWei,
@@ -115,9 +110,9 @@ contract("TicketWallet", ([owner, retailer]) => {
 
     assert.equal(items.length, 1);
 
-    const payloadUrl = await ticketWallet.getTicketPayloadUrlById(items[0].toNumber(), { from: retailer });
+    const payloadUrl = await ticketWallet.tokenURI(items[0].toNumber(), { from: retailer });
 
-    assert.equal(toAscii(payloadUrl), "ipfs://2fkfsd");
+    assert.equal(payloadUrl, "ipfs://2fkfsd");
   });
 
   it("retailer can mark the order as fulfilled", async () => {
@@ -136,9 +131,9 @@ contract("TicketWallet", ([owner, retailer]) => {
 
     assert.equal(outputState.toNumber(), 1);
 
-    const fulfilmentUrl = await ticketWallet.getFulfilmentUrlById(ticketId, { from: owner });
+    const fulfilmentURI = await ticketWallet.getFulfilmentURIById(ticketId, { from: owner });
 
-    assert.equal(toAscii(fulfilmentUrl), "ipfs://fulfilment");
+    assert.equal(fulfilmentURI, "ipfs://fulfilment");
 
     const queue = await ticketWallet.getFulfilmentQueue({ from: retailer });
 
