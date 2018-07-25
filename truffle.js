@@ -1,5 +1,5 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
-const infura = require("./infura");
+const testConfig = require("./config/test");
 
 module.exports = {
   networks: {
@@ -9,7 +9,7 @@ module.exports = {
       network_id: "*"
     },
     test: {
-      provider: () => new HDWalletProvider(infura.mnemonic, infura.url),
+      provider: () => new HDWalletProvider(testConfig.mnemonic, testConfig.url),
       network_id: 3,
       gas: 2700000
     }

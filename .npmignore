@@ -4,4 +4,4 @@ src/
 .travis.yml
 ./index.js
 .idea/
-infura.js
+config/
