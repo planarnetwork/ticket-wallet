@@ -39012,9 +39012,16 @@ exports.Migrations = {
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0xbaefaf9330a7f3e2a69aeda8734574b8d2381eb1",
+      "transactionHash": "0xad15b29a284b8edf8a5b77410256ec244897a8f20d42bf0dad402c251bf5837f"
+    }
+  },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-25T15:58:14.053Z"
+  "updatedAt": "2018-07-25T16:12:54.100Z"
 };
 exports.SafeMath = {
   "contractName": "SafeMath",
@@ -55106,7 +55113,14 @@ exports.TicketWallet = {
     "name": "solc",
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "3": {
+      "events": {},
+      "links": {},
+      "address": "0x6f553da390d0eb1772ee4a45450f838547076ce1",
+      "transactionHash": "0x29c357697c601f71349fa40cbb42dd9b55b365bf7030e46e3cfba22dde5411b3"
+    }
+  },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-07-25T16:07:16.130Z"
+  "updatedAt": "2018-07-25T16:12:54.113Z"
 };
