@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
-import {ERC721Token} from "zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
-import {ECRecovery} from "zeppelin-solidity/contracts/ECRecovery.sol";
+import {ERC721Token} from "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
+import {ECRecovery} from "openzeppelin-solidity/contracts/ECRecovery.sol";
 
 /**
  * Manage the creation and storage of tickets.

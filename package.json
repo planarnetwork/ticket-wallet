@@ -31,14 +31,13 @@
   },
   "homepage": "https://github.com/planarnetwork/ticket-wallet",
   "devDependencies": {
-    "eth-crypto": "^1.2.3",
     "eth-gas-reporter": "^0.1.10",
     "ganache-cli": "^6.1.6",
+    "openzeppelin-solidity": "^1.11.0",
     "solium": "^1.1.8",
     "truffle": "^4.1.13",
     "truffle-hdwallet-provider": "0.0.5",
-    "web3-utils": "^1.0.0-beta.34",
-    "zeppelin-solidity": "^1.10.0"
+    "web3-utils": "^1.0.0-beta.35"
   },
   "dependencies": {},
   "directories": {

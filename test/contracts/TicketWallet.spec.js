@@ -1,5 +1,5 @@
 const TicketWallet = artifacts.require("TicketWallet.sol");
-const Web3Utils = require('web3-utils');
+const Web3Utils = require("web3-utils");
 
 contract("TicketWallet", ([owner, retailer]) => {
 
@@ -39,7 +39,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     assert.equal(description, ticketDescription);
     assert.equal(payloadUrl, ticketPayload);
   });
-  
+
   it("ensures amount sent covers the cost of the ticket", async () => {
     const ticketWallet = await TicketWallet.deployed();
     const expiry = Math.floor(Date.now() / 1000) + 86400;
@@ -51,7 +51,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     const signature = web3.eth.sign(retailer, hash);
 
     let complete = false;
-  
+
     try {
       await ticketWallet.createTicket(
         ticketDescription,
@@ -64,14 +64,14 @@ contract("TicketWallet", ([owner, retailer]) => {
           from: owner
         }
       );
-  
+
       complete = true;
     }
     catch (err) {}
-  
+
     assert.equal(complete, false);
   });
-  
+
   it("ensures offer has not expired", async () => {
     const ticketWallet = await TicketWallet.deployed();
     const expiry = Math.floor(Date.now() / 1000) - 86400;
