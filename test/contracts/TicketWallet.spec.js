@@ -153,4 +153,10 @@ contract("TicketWallet", ([owner, retailer]) => {
     assert.equal(outputState.toNumber(), 2);
   });
 
+  it("the owner can get their tickets", async () => {
+    const ticketWallet = await TicketWallet.deployed();
+    const tickets = await ticketWallet.getOwnedTokens({ from: owner });
+
+    assert.equal(tickets[0].toNumber(), 0);
+  });
 });

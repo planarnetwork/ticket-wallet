@@ -43,12 +43,12 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   /**
    * Fulfilment queues
    */
-  mapping(address => uint[]) fulfilment;
+  mapping(address => uint[]) internal fulfilment;
 
   /**
    * Ticket storage
    */
-  Ticket[] public tickets;
+  Ticket[] internal tickets;
 
   /**
    * Add a ticket to the contract. 
@@ -171,5 +171,13 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   function getFulfilmentQueue() public view returns (uint[]) {
     return fulfilment[msg.sender];
   }
+
+  /**
+   * Get msg.sender token IDs
+   */
+  function getOwnedTokens() public view returns (uint[] memory) {
+    return ownedTokens[msg.sender];
+  }
+
 
 }
