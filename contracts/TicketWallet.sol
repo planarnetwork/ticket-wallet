@@ -1,12 +1,13 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 
-import {ERC721Token} from "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
-import {ECRecovery} from "openzeppelin-solidity/contracts/ECRecovery.sol";
+import {ERC721Full} from "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
+import {ERC721Mintable} from "openzeppelin-solidity/contracts/token/ERC721/ERC721Mintable.sol";
+import {ECDSA} from "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 
 /**
  * Manage the creation and storage of tickets.
  */
-contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
+contract TicketWallet is ERC721Full("Ticket wallet", "PLNR-WALLET"), ERC721Mintable {
 
   /**
    * Ticket lifecycle
@@ -57,11 +58,11 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
    * ticket and store it in the contract storage.
    */
   function createTicket(
-    string _description,
-    string _itemUrl,
+    string memory _description,
+    string memory _itemUrl,
     uint _expiry,
-    address _retailer,
-    bytes _signature
+    address payable _retailer,
+    bytes memory _signature
   ) 
     public 
     payable 
@@ -70,7 +71,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
     bytes32 _expectedHash = keccak256(abi.encodePacked(_itemUrl, "_", msg.value, "_", _expiry));
     bytes32 _expectedSignature = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", _expectedHash));
 
-    require(ECRecovery.recover(_expectedSignature, _signature) == _retailer, "Invalid signature");
+    require(ECDSA.recover(_expectedSignature, _signature) == _retailer, "Invalid signature");
     require(_expiry > now, "Offer has expired");
 
     Ticket memory _ticket = Ticket({
@@ -95,7 +96,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   /**
    * Fulfil the ticket and attach the fulfilment URL
    */
-  function fulfilTicket(uint _ticketId, string _fulfilmentURI) public onlyRetailerOf(_ticketId) {
+  function fulfilTicket(uint _ticketId, string memory _fulfilmentURI) public onlyRetailerOf(_ticketId) {
     uint _indexInFulfilmentQueue = getQueueIndex(_ticketId);
 
     require(_indexInFulfilmentQueue != fulfilment[msg.sender].length, "Ticket must be queued for fulfilment");
@@ -145,7 +146,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   /**
    * Return the description of the ticket 
    */
-  function getTicketDescriptionById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (string) {
+  function getTicketDescriptionById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (string memory) {
     return tickets[_ticketId].description;
   }
 
@@ -159,7 +160,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   /**
    * Return the URI containing the fulfilment information
    */
-  function getFulfilmentURIById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (string) {
+  function getFulfilmentURIById(uint _ticketId) public onlyRetailerOrOwnerOf(_ticketId) view returns (string memory) {
     require(tickets[_ticketId].state == TicketState.Fulfilled, "Ticket state must be fulfilled");
 
     return tickets[_ticketId].fulfilmentURI;
@@ -168,7 +169,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
   /**
    * Get fulfilment queue of retailer
    */
-  function getFulfilmentQueue() public view returns (uint[]) {
+  function getFulfilmentQueue() public view returns (uint[] memory) {
     return fulfilment[msg.sender];
   }
 
@@ -176,7 +177,7 @@ contract TicketWallet is ERC721Token("Ticket wallet", "PLNR-WALLET") {
    * Get msg.sender token IDs
    */
   function getOwnedTokens() public view returns (uint[] memory) {
-    return ownedTokens[msg.sender];
+    return _tokensOfOwner(msg.sender);
   }
 
 

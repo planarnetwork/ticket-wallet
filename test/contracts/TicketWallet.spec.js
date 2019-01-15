@@ -11,7 +11,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     const ticketDescription = "Anytime from Brighton to London";
     const ticketPayload = "ipfs://2fkfsd";
     const hash = Web3Utils.soliditySha3(ticketPayload, "_", ticketCostWei, "_", expiry);
-    const signature = web3.eth.sign(retailer, hash);
+    const signature = await web3.eth.sign(hash, retailer);
     const originalWei = await web3.eth.getBalance(retailer);
 
     await ticketWallet.createTicket(
@@ -35,7 +35,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     const expectedEth = parseFloat(Web3Utils.fromWei(originalWei.toString(), "ether")) + ticketCostEth;
     const expectedWei = Web3Utils.toWei(expectedEth.toString(), "ether");
 
-    assert.equal(finalWei.toNumber(), expectedWei);
+    assert.equal(finalWei, expectedWei);
     assert.equal(description, ticketDescription);
     assert.equal(payloadUrl, ticketPayload);
   });
@@ -48,7 +48,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     const ticketDescription = "Anytime from Brighton to London";
     const ticketPayload = "ipfs://2fkfsd";
     const hash = Web3Utils.soliditySha3(ticketPayload, "_", ticketCostWei, "_", expiry);
-    const signature = web3.eth.sign(retailer, hash);
+    const signature = await web3.eth.sign(hash, retailer);
 
     let complete = false;
 
@@ -80,7 +80,7 @@ contract("TicketWallet", ([owner, retailer]) => {
     const ticketDescription = "Anytime from Brighton to London";
     const ticketPayload = "ipfs://2fkfsd";
     const hash = Web3Utils.soliditySha3(ticketPayload, "_", ticketCostWei, "_", expiry);
-    const signature = web3.eth.sign(retailer, hash);
+    const signature = await web3.eth.sign(hash, retailer);
 
     let complete = false;
 

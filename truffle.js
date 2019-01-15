@@ -11,7 +11,7 @@ module.exports = {
     test: {
       provider: () => new HDWalletProvider(testConfig.mnemonic, testConfig.url),
       network_id: 3,
-      gas: 2700000
+      gas: 2900000
     }
   },
   mocha: {
